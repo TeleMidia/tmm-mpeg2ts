@@ -442,7 +442,7 @@ double doubleInfinity = double_info.infinity();
 		#ifdef WIN32
 			fd = open(fileName.c_str(), O_CREAT | O_WRONLY | O_BINARY, 0644);
 		#else
-			fd = open(fileName.c_str(), O_WRONLY, 0644);
+			fd = open(fileName.c_str(), O_CREAT | O_WRONLY, 0644);
 		#endif
 		return fd;
 	}
