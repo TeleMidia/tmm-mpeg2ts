@@ -12,6 +12,7 @@
 #include "util/functions.h"
 using namespace br::pucrio::telemidia::mpeg2::util;
 
+#include <inttypes.h>
 #include <iostream>
 #include <vector>
 #include <string.h>

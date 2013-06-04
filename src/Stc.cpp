@@ -130,8 +130,8 @@ void Stc::getClock(struct timeval* usrClk) {
 		cout << "Stc::getClock - CLOCK_MONOTONIC not supported." << endl;
 		exit(EXIT_FAILURE);
 	}
-	usrClk->tv_sec = st->tv_sec;
-	usrClk->tv_usec = st->tv_nsec / 1000;
+	usrClk->tv_sec = st.tv_sec;
+	usrClk->tv_usec = st.tv_nsec / 1000;
 #endif
 }
 

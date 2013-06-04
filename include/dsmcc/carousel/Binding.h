@@ -11,6 +11,7 @@
 #include "dsmcc/carousel/Iop/Ior.h"
 #include "dsmcc/carousel/Biop/Name.h"
 
+#include <inttypes.h>
 #include <iostream>
 #include <string>
 #include <string.h>

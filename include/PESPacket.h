@@ -52,6 +52,7 @@ http://www.telemidia.puc-rio.br
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <inttypes.h>
 using namespace std;
 
 namespace br {

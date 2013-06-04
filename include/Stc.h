@@ -55,6 +55,7 @@ http://www.telemidia.puc-rio.br
 #include <cstdlib>
 #include <sys/time.h>
 #include <unistd.h>
+#include <inttypes.h>
 
 #ifdef _WIN32
 #include <Windows.h>

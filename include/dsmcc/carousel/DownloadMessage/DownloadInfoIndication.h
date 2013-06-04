@@ -9,7 +9,7 @@
 #define DOWNLOADINFOINDICATION_H_
 
 #include "dsmcc/carousel/MessageHeader.h"
-#include "dsmcc/carousel/DownloadMessage/moduleInfo.h"
+#include "dsmcc/carousel/DownloadMessage/ModuleInfo.h"
 
 #include <vector>
 #include <iostream>

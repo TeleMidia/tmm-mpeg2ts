@@ -49,6 +49,8 @@ http://www.telemidia.puc-rio.br
 #ifndef MPEGDESCRIPTOR_H_
 #define MPEGDESCRIPTOR_H_
 
+#include <inttypes.h>
+
 #include <iostream>
 #include <vector>
 
