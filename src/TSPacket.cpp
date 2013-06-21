@@ -57,6 +57,7 @@ namespace mpeg2 {
 		stream = new char[TS_PACKET_SIZE];
 		payload = new char[TS_PAYLOAD_SIZE];
 		payload2 = new char[TS_PAYLOAD_SIZE];
+		transportErrorIndication = 0;
 		sectionType = 1;
 		payloadSize = 0;
 		tsaf = NULL;
@@ -70,6 +71,7 @@ namespace mpeg2 {
 		payload2 = new char[TS_PAYLOAD_SIZE];
 		tsaf = NULL;
 		sectionType = 1;
+		transportErrorIndication = 0;
 	}
 
 	/*

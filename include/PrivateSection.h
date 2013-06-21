@@ -69,7 +69,7 @@ class PrivateSection {
 	   unsigned short privateSectionLength;
 
 		/*
-		 * transport_stream_id for PAT
+		 * transport_stream_id for PAT & SDT
 		 * program_number for PMT
 		 * table_id_extension for DSM_CC Section
 		 * service_id for EIT
