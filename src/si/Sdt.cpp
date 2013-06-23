@@ -37,6 +37,8 @@ void Sdt::releaseAllServiceInformation() {
 		}
 		++it;
 	}
+
+	serviceList.clear();
 }
 
 int Sdt::processSectionPayload() {
@@ -124,7 +126,7 @@ int Sdt::updateStream() {
 		stream[pos] = 0;
 		stream[pos] = stream[pos] | (((*it)->runningStatus & 0x03) << 5);
 		stream[pos] = stream[pos] | (((*it)->freeCaMode & 0x01) << 4);
-		stream[pos] = stream[pos] | (((*it)->descriptorLoopLength & 0x0F) << 4);
+		stream[pos] = stream[pos] | (((*it)->descriptorLoopLength >> 8) & 0x0F);
 		pos++;
 		stream[pos++] = ((*it)->descriptorLoopLength & 0xFF);
 		itDesc = (*it)->descriptorList.begin();

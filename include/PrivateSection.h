@@ -70,6 +70,7 @@ class PrivateSection {
 
 		/*
 		 * transport_stream_id for PAT & SDT
+		 * network_id for NIT
 		 * program_number for PMT
 		 * table_id_extension for DSM_CC Section
 		 * service_id for EIT
