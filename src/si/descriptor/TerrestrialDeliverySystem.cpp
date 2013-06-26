@@ -13,7 +13,8 @@ namespace telemidia {
 namespace mpeg2 {
 
 TerrestrialDeliverySystem::TerrestrialDeliverySystem() : MpegDescriptor(0xFA) {
-	areaCode = 0x992; // ???
+	//Divisão Regional do Brasil em Mesorregiões e Microrregiões Geográficas page 90
+	areaCode = 0x992; // 19-18 (RJ-Rio de Janeiro) ABNT NBR 15603-2:2007 page 122
 	guardInterval = GUARD_INTERVAL_1_16;
 	transmissionMode = TRANSMISSION_MODE_3;
 }
