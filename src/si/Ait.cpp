@@ -97,7 +97,7 @@ int Ait::createAndAddDescriptor(unsigned char descriptorTag,
 
 int Ait::processSectionPayload() {
 	int pos = PrivateSection::processSectionPayload();
-	unsigned short cdlength = 0, cdlength2 = 0;
+	unsigned short cdlength = 0, cdlength2;
 	unsigned char descriptorTag;
 	unsigned short descriptorSize;
 
@@ -140,6 +140,7 @@ int Ait::processSectionPayload() {
  	   	   	                              (stream[pos+1] & 0xFF));
 		pos += 2;
 		cdlength += 9;
+		cdlength2 = 0;
 		appinfo->appDescriptorList = new vector<MpegDescriptor*>;
 		while (cdlength2 < appinfo->descriptorLoopLength) {
 			descriptorTag = stream[pos] & 0xFF;
