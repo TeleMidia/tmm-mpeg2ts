@@ -44,8 +44,8 @@ class Tot : public PrivateSection {
 		vector<MpegDescriptor*>* getDescriptorList();
 		void addDescriptor(MpegDescriptor *d);
 
-		static double dateToMJD(time_t rawTime);
-		static time_t MJDtoDateTime(double mjd);
+		static unsigned int dateToMJD(time_t rawTime);
+		static time_t MJDtoDateTime(unsigned int mjd);
 		static unsigned char decToBCD(unsigned char val);
 		static unsigned char BCDtoDec(unsigned char val);
 		static unsigned int timeToBCD(time_t rawTime, char utc);

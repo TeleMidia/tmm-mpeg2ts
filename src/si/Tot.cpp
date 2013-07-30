@@ -167,11 +167,11 @@ time_t Tot::getDateTime() {
 	return dateTime;
 }
 
-double Tot::dateToMJD(time_t rawTime) {
+unsigned int Tot::dateToMJD(time_t rawTime) {
 	return MJD_1970_01_01 + ((rawTime) / 86400.0);
 }
 
-time_t Tot::MJDtoDateTime(double mjd) {
+time_t Tot::MJDtoDateTime(unsigned int mjd) {
 	return (long) (((mjd) - MJD_1970_01_01) * 86400.0);
 }
 

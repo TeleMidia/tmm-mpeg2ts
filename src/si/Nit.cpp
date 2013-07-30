@@ -288,14 +288,6 @@ void Nit::addDescriptor(MpegDescriptor* d) {
 	descriptorsList.push_back(d);
 }
 
-void Nit::setTransportStreamId(unsigned short id) {
-	transportStreamLoopLength = id;
-}
-
-unsigned short Nit::getTransportStreamId() {
-	return transportStreamLoopLength;
-}
-
 void Nit::addTransportInformation(TransportInformation *ti) {
 	if (ti) {
 		transportList.push_back(ti);

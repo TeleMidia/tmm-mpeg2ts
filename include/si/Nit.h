@@ -49,9 +49,6 @@ class Nit : public PrivateSection {
 
 		int updateStream();
 
-		void setTransportStreamId(unsigned short id);
-		unsigned short getTransportStreamId();
-
 		vector<MpegDescriptor*>* getDescriptorsList();
 		void addDescriptor(MpegDescriptor* d);
 		void addTransportInformation(TransportInformation *ti);
