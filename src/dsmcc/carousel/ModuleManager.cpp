@@ -227,7 +227,7 @@ namespace dsmcc {
 		i = folderContent.begin();
 		while (i != folderContent.end()) {
 			bind = new Binding();
-			fullFileName = path + "/" + *i;
+			fullFileName = path + getUriSlash() + *i;
 			result = isDir(fullFileName);
 			if (result == 1) {
 				kindData = "dir";

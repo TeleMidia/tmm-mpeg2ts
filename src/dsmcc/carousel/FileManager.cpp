@@ -324,11 +324,32 @@ namespace dsmcc {
 				i != fileList.end(); ++i) {
 			// test for . and .. directories (this and back)
 			if (strcmp((*i).c_str(), ".") && strcmp((*i).c_str(), "..")) {
-				string fullname = directory + "/" + (*i);
+				string fullname = directory + getUriSlash() + (*i);
 				fullList->push_back(fullname);
 				travelAllDir(fullname, fullList);
 			}
 		}
+	}
+
+	bool FileManager::removeFiles(string folder) {
+		struct dirent *next_file;
+		DIR *theFolder;
+		struct stat filestat;
+
+		char filepath[256];
+
+		if ((theFolder = opendir(folder.c_str())) != NULL) {
+			while ((next_file = readdir(theFolder)) != NULL )
+			{
+				// build the full path for each file in the folder
+				sprintf(filepath, "%s%s", folder.c_str(), next_file->d_name);
+				if (next_file->d_name[0] != '.') continue;
+				if (S_ISDIR( filestat.st_mode )) continue;
+				remove(filepath);
+			}
+			return true;
+		}
+		return false;
 	}
 
 }

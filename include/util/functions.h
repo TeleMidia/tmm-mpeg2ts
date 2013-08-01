@@ -51,6 +51,7 @@ namespace util {
 	void setDocumentPath(string docPath);
 	string getDocumentPath();
 	string getCurrentPath();
+	string getUriSlash();
 	double NaN();
 	double infinity();
 	bool isNaN(double value);

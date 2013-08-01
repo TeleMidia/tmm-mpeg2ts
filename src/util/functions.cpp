@@ -181,6 +181,14 @@ namespace util {
 		return gingaCurrentPath;
 	}
 
+	string getUriSlash() {
+#ifdef _WIN32
+		return "\\";
+#else
+		return "/";
+#endif
+	}
+
 	vector<string>* split(string str, string delimiter) {
 		vector<string>* splited;
 		splited = new vector<string>;

@@ -63,6 +63,7 @@ namespace dsmcc {
 
 			static vector<string> travelDir(string directory);
 			static void travelAllDir(string directory,vector<string>* fullList);
+			static bool removeFiles(string folder);
 			static bool comparisonStringInt(const pair<string, int> &p1,
 									 const pair<string, int> &p2);
 			static bool comparisonUintString(const pair<unsigned int, string> &p1,

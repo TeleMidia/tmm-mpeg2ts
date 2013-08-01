@@ -143,6 +143,10 @@ namespace dsmcc {
 				return -1;
 			}
 		}
+
+		FileManager::removeFiles(tempFolder);
+		remove(outputFile.c_str());
+
 		if (!moduleManager->setTempFolder(tempFolder)) {
 			cout << "Carousel::createCarousel: Invalid temporary folder." << endl;
 			return -2;
