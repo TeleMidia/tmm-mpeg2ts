@@ -11,10 +11,11 @@
 #include "PrivateSection.h"
 #include "si/Descriptor/ShortEvent.h"
 #include "si/Descriptor/Component.h"
+#include "si/Descriptor/ParentalRating.h"
 #include "si/Tot.h"
 #include "Crc32.h"
 
-#include <vector>
+#include <map>
 #include <ctime>
 
 namespace br {
@@ -40,7 +41,7 @@ class Eit : public PrivateSection {
 		unsigned char segmentLastSectionNumber;
 		unsigned char lastTableId;
 
-		vector<EventInfo*> eventList;
+		map<unsigned short, EventInfo*> eventList;
 
 	protected:
 		int processSectionPayload();
@@ -61,8 +62,9 @@ class Eit : public PrivateSection {
 		void setLastTableId(unsigned char ltid);
 		unsigned char getLastTableId();
 
-		vector<EventInfo*>* getEventList();
-		void addEventInfo(EventInfo *event);
+		map<unsigned short, EventInfo*>* getEventList();
+		bool hasEvent(unsigned short eventId);
+		bool addEventInfo(EventInfo *event);
 		void releaseAllEvents();
 
 };

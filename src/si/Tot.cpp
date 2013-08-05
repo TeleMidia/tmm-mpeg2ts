@@ -18,12 +18,17 @@ Tot::Tot() : PrivateSection() {
 }
 
 Tot::~Tot() {
+	releaseAllDescriptors();
+}
+
+void Tot::releaseAllDescriptors() {
 	vector<MpegDescriptor*>::iterator itDesc;
 	itDesc = descriptorList.begin();
 	while (itDesc != descriptorList.end()) {
 		delete (*itDesc);
 		++itDesc;
 	}
+	descriptorList.clear();
 }
 
 int Tot::processSectionPayload() {
@@ -207,14 +212,14 @@ time_t Tot::BCDtoTime(unsigned int bcd) {
 	when.tm_mday = 1;
 	when.tm_mon = 0;
 	when.tm_year = 70;
-	when.tm_hour = hh + localTimezone();
+	when.tm_hour = hh;
 	when.tm_min = mm;
 	when.tm_sec = ss;
 
-	return mktime(&when);
+	return mktime(&when) + (localTimezone() * 60);
 }
 
-char Tot::localTimezone() {
+short Tot::localTimezone() {
 	struct tm when = {0};
 
 	when.tm_mday = 1;
@@ -224,7 +229,7 @@ char Tot::localTimezone() {
 	when.tm_min = 0;
 	when.tm_sec = 0;
 
-	return (0 - mktime(&when) / 3600);
+	return ((0 - mktime(&when)) / 60);
 }
 
 time_t Tot::makeUtcTime(unsigned char hh, unsigned char mm,
@@ -234,11 +239,11 @@ time_t Tot::makeUtcTime(unsigned char hh, unsigned char mm,
 	when.tm_mday = 1;
 	when.tm_mon = 0;
 	when.tm_year = 70;
-	when.tm_hour = hh + localTimezone();
+	when.tm_hour = hh;
 	when.tm_min = mm;
 	when.tm_sec = ss;
 
-	return mktime(&when);
+	return mktime(&when) + (localTimezone() * 60);
 }
 
 }

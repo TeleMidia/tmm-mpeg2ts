@@ -43,6 +43,7 @@ class Tot : public PrivateSection {
 		time_t getDateTime();
 		vector<MpegDescriptor*>* getDescriptorList();
 		void addDescriptor(MpegDescriptor *d);
+		void releaseAllDescriptors();
 
 		static unsigned int dateToMJD(time_t rawTime);
 		static time_t MJDtoDateTime(unsigned int mjd);
@@ -50,7 +51,7 @@ class Tot : public PrivateSection {
 		static unsigned char BCDtoDec(unsigned char val);
 		static unsigned int timeToBCD(time_t rawTime, char utc);
 		static time_t BCDtoTime(unsigned int bcd);
-		static char localTimezone();
+		static short localTimezone(); //in minutes
 		static time_t makeUtcTime(unsigned char hh, unsigned char mm,
 								  unsigned char ss);
 

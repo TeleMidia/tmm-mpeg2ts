@@ -21,18 +21,18 @@ Eit::~Eit() {
 }
 
 void Eit::releaseAllEvents() {
-	vector<EventInfo*>::iterator itEvent;
+	map<unsigned short, EventInfo*>::iterator itEvent;
 	vector<MpegDescriptor*>::iterator itDesc;
 
 	itEvent = eventList.begin();
 	while (itEvent != eventList.end()) {
-		if (*itEvent) {
-			itDesc = (*itEvent)->descriptorsList.begin();
-			while (itDesc != (*itEvent)->descriptorsList.end()) {
+		if (itEvent->second) {
+			itDesc = itEvent->second->descriptorsList.begin();
+			while (itDesc != itEvent->second->descriptorsList.end()) {
 				if (*itDesc) delete (*itDesc);
 				++itDesc;
 			}
-			delete (*itEvent);
+			delete (itEvent->second);
 		}
 		++itEvent;
 	}
@@ -101,6 +101,11 @@ int Eit::processSectionPayload() {
 				d->addData(stream + pos, descriptorSize);
 				ei->descriptorsList.push_back(d);
 				break;
+			case 0x55: // Parental rating descriptor
+				d = new ParentalRating();
+				d->addData(stream + pos, descriptorSize);
+				ei->descriptorsList.push_back(d);
+				break;
 			default:
 				cout << "Eit::processSectionPayload - Descriptor unrecognized. " <<
 						(descriptorTag && 0xFF) << endl;
@@ -121,7 +126,7 @@ int Eit::processSectionPayload() {
 }
 
 int Eit::updateStream() {
-	vector<EventInfo*>::iterator itEvent;
+	map<unsigned short, EventInfo*>::iterator itEvent;
 	vector<MpegDescriptor*>::iterator itDesc;
 	int streamLen;
 	char* dataStream;
@@ -137,36 +142,36 @@ int Eit::updateStream() {
 
 	itEvent = eventList.begin();
 	while (itEvent != eventList.end()) {
-		stream[pos++] = (((*itEvent)->eventId >> 8) & 0xFF);
-		stream[pos++] = (*itEvent)->eventId & 0xFF;
-		value = Tot::dateToMJD((*itEvent)->startTime);
+		stream[pos++] = ((itEvent->second->eventId >> 8) & 0xFF);
+		stream[pos++] = itEvent->second->eventId & 0xFF;
+		value = Tot::dateToMJD(itEvent->second->startTime);
 		stream[pos++] = ((value >> 8) & 0xFF);
 		stream[pos++] = value & 0xFF;
-		value = Tot::timeToBCD((*itEvent)->startTime, 0);
+		value = Tot::timeToBCD(itEvent->second->startTime, 0);
 		stream[pos++] = ((value >> 16) & 0xFF);
 		stream[pos++] = ((value >> 8) & 0xFF);
 		stream[pos++] = value & 0xFF;
-		value = Tot::timeToBCD((*itEvent)->duration, 0);
+		value = Tot::timeToBCD(itEvent->second->duration, 0);
 		stream[pos++] = ((value >> 16) & 0xFF);
 		stream[pos++] = ((value >> 8) & 0xFF);
 		stream[pos++] = value & 0xFF;
-		stream[pos] = ((*itEvent)->runningStatus << 5) & 0xE0;
-		if ((*itEvent)->freeCaMode) value = 1; else value = 0;
+		stream[pos] = (itEvent->second->runningStatus << 5) & 0xE0;
+		if (itEvent->second->freeCaMode) value = 1; else value = 0;
 		stream[pos] = stream[pos] | ((value << 4) & 0x10);
 
-		(*itEvent)->descriptorsLoopLength = 0;
-		itDesc = (*itEvent)->descriptorsList.begin();
-		while (itDesc != (*itEvent)->descriptorsList.end()) {
-			(*itEvent)->descriptorsLoopLength += (*itDesc)->getStreamSize();
+		itEvent->second->descriptorsLoopLength = 0;
+		itDesc = itEvent->second->descriptorsList.begin();
+		while (itDesc != itEvent->second->descriptorsList.end()) {
+			itEvent->second->descriptorsLoopLength += (*itDesc)->getStreamSize();
 			++itDesc;
 		}
 
-		stream[pos] = stream[pos] | (((*itEvent)->descriptorsLoopLength >> 8) & 0x0F);
+		stream[pos] = stream[pos] | ((itEvent->second->descriptorsLoopLength >> 8) & 0x0F);
 		pos += 1;
-		stream[pos++] = (*itEvent)->descriptorsLoopLength & 0xFF;
+		stream[pos++] = itEvent->second->descriptorsLoopLength & 0xFF;
 
-		itDesc = (*itEvent)->descriptorsList.begin();
-		while (itDesc != (*itEvent)->descriptorsList.end()) {
+		itDesc = itEvent->second->descriptorsList.begin();
+		while (itDesc != itEvent->second->descriptorsList.end()) {
 			streamLen = (*itDesc)->getStream(&dataStream);
 			if ((pos + streamLen + 4) <= MAX_SECTION_SIZE) {
 				memcpy(stream + pos, dataStream, streamLen);
@@ -191,7 +196,7 @@ int Eit::updateStream() {
 }
 
 int Eit::calculateSectionSize() {
-	vector<EventInfo*>::iterator itEvent;
+	map<unsigned short, EventInfo*>::iterator itEvent;
 	vector<MpegDescriptor*>::iterator itDesc;
 	unsigned int pos = PrivateSection::calculateSectionSize();
 
@@ -199,20 +204,20 @@ int Eit::calculateSectionSize() {
 
 	itEvent = eventList.begin();
 	while (itEvent != eventList.end()) {
-		(*itEvent)->descriptorsLoopLength = 0;
-		itDesc = (*itEvent)->descriptorsList.begin();
-		while (itDesc != (*itEvent)->descriptorsList.end()) {
-			(*itEvent)->descriptorsLoopLength += (*itDesc)->getStreamSize();
+		itEvent->second->descriptorsLoopLength = 0;
+		itDesc = itEvent->second->descriptorsList.begin();
+		while (itDesc != itEvent->second->descriptorsList.end()) {
+			itEvent->second->descriptorsLoopLength += (*itDesc)->getStreamSize();
 			++itDesc;
 		}
-		pos += (*itEvent)->descriptorsLoopLength + 12;
+		pos += itEvent->second->descriptorsLoopLength + 12;
 		++itEvent;
 	}
 
 	return pos + 4;
 }
 
-vector<EventInfo*>* Eit::getEventList() {
+map<unsigned short, EventInfo*>* Eit::getEventList() {
 	return &eventList;
 }
 
@@ -248,10 +253,18 @@ unsigned char Eit::getLastTableId() {
 	return lastTableId;
 }
 
-void Eit::addEventInfo(EventInfo *event) {
+bool Eit::hasEvent(unsigned short eventId) {
+	if (eventList.count(eventId)) return true;
+	return false;
+}
+
+bool Eit::addEventInfo(EventInfo *event) {
 	if (event) {
-		eventList.push_back(event);
+		if (hasEvent(event->eventId)) return false;
+		eventList[event->eventId] = event;
+		return true;
 	}
+	return false;
 }
 
 }
