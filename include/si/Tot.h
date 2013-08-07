@@ -25,11 +25,12 @@ class Tot : public PrivateSection {
 	#define MJD_1970_01_01 40587
 
 	private:
+
+	protected:
 		time_t dateTime;
 		vector<MpegDescriptor*> descriptorList;
 		unsigned short descriptorsLength;
 
-	protected:
 		int processSectionPayload();
 		int calculateSectionSize();
 

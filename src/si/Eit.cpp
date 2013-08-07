@@ -14,6 +14,7 @@ namespace mpeg2 {
 
 Eit::Eit() : PrivateSection() {
 	tableId = 0x4E;
+	destroyEvents = true;
 }
 
 Eit::~Eit() {
@@ -24,20 +25,26 @@ void Eit::releaseAllEvents() {
 	map<unsigned short, EventInfo*>::iterator itEvent;
 	vector<MpegDescriptor*>::iterator itDesc;
 
-	itEvent = eventList.begin();
-	while (itEvent != eventList.end()) {
-		if (itEvent->second) {
-			itDesc = itEvent->second->descriptorsList.begin();
-			while (itDesc != itEvent->second->descriptorsList.end()) {
-				if (*itDesc) delete (*itDesc);
-				++itDesc;
+	if (destroyEvents) {
+		itEvent = eventList.begin();
+		while (itEvent != eventList.end()) {
+			if (itEvent->second) {
+				itDesc = itEvent->second->descriptorsList.begin();
+				while (itDesc != itEvent->second->descriptorsList.end()) {
+					if (*itDesc) delete (*itDesc);
+					++itDesc;
+				}
+				delete (itEvent->second);
 			}
-			delete (itEvent->second);
+			++itEvent;
 		}
-		++itEvent;
 	}
 
 	eventList.clear();
+}
+
+void Eit::setDestroyEvents(bool destroy) {
+	destroyEvents = destroy;
 }
 
 int Eit::processSectionPayload() {

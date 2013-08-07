@@ -23,6 +23,14 @@ namespace pucrio {
 namespace telemidia {
 namespace mpeg2 {
 
+#define RS_UNDEFINED				0
+#define RS_NOT_RUNNING				1
+#define RS_STARTS_IN_A_FEW_SECONDS	2
+#define RS_PAUSING					3
+#define RS_RUNNING					4
+#define RS_RESERVED					7
+
+
 struct EventInfo {
 	unsigned short eventId;
 	time_t startTime;
@@ -36,14 +44,16 @@ struct EventInfo {
 class Eit : public PrivateSection {
 
 	private:
+
+	protected:
 		unsigned short transportStreamId;
 		unsigned short originalNetworkId;
 		unsigned char segmentLastSectionNumber;
 		unsigned char lastTableId;
+		bool destroyEvents;
 
 		map<unsigned short, EventInfo*> eventList;
 
-	protected:
 		int processSectionPayload();
 		int calculateSectionSize();
 
@@ -66,6 +76,7 @@ class Eit : public PrivateSection {
 		bool hasEvent(unsigned short eventId);
 		bool addEventInfo(EventInfo *event);
 		void releaseAllEvents();
+		void setDestroyEvents(bool destroy);
 
 };
 
