@@ -124,7 +124,7 @@ int Sdt::updateStream() {
 		stream[pos] = stream[pos] | ((*it)->eitPresentFollowingFlag & 0x01);
 		pos++;
 		stream[pos] = 0;
-		stream[pos] = stream[pos] | (((*it)->runningStatus & 0x03) << 5);
+		stream[pos] = stream[pos] | (((*it)->runningStatus & 0x07) << 5);
 		stream[pos] = stream[pos] | (((*it)->freeCaMode & 0x01) << 4);
 		stream[pos] = stream[pos] | (((*it)->descriptorLoopLength >> 8) & 0x0F);
 		pos++;
