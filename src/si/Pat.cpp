@@ -151,6 +151,12 @@ void Pat::removePmt(unsigned short pid) {
 	}
 }
 
+void Pat::releasePmtList() {
+	if (pmtList != NULL) {
+		pmtList->clear();
+	}
+}
+
 }
 }
 }

@@ -77,6 +77,8 @@ class Pat : public PrivateSection {
 
 		void addPmt(unsigned short programNumber, unsigned short pid);
 		void removePmt(unsigned short pid);
+
+		void releasePmtList();
 };
 
 }
