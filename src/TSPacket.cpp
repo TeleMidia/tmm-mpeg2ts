@@ -54,7 +54,7 @@ namespace telemidia {
 namespace mpeg2 {
 
 	TSPacket::TSPacket(char* packet) {
-		stream = new char[TS_PACKET_SIZE];
+		stream = new char[TS_PACKET_SIZE_204];
 		payload = new char[TS_PAYLOAD_SIZE];
 		payload2 = new char[TS_PAYLOAD_SIZE];
 		transportErrorIndication = 0;
@@ -66,7 +66,7 @@ namespace mpeg2 {
 	}
 
 	TSPacket::TSPacket() {
-		stream = new char[TS_PACKET_SIZE];
+		stream = new char[TS_PACKET_SIZE_204];
 		payload = new char[TS_PAYLOAD_SIZE];
 		payload2 = new char[TS_PAYLOAD_SIZE];
 		tsaf = NULL;
@@ -84,7 +84,7 @@ namespace mpeg2 {
 			unsigned char payloadSize,
 				TSAdaptationField* tsaf) {
 
-		stream = new char[TS_PACKET_SIZE];
+		stream = new char[TS_PACKET_SIZE_204];
 		this->payload = new char[TS_PAYLOAD_SIZE];
 		payload2 = new char[TS_PAYLOAD_SIZE];
 

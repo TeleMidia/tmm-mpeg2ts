@@ -63,6 +63,7 @@ namespace mpeg2 {
 
 class TSPacket {
 	public:
+		static const unsigned short TS_PACKET_SIZE_204 = 204;
 		static const unsigned short TS_PACKET_SIZE = 188;
 		static const unsigned short TS_PAYLOAD_SIZE = 184;
 		static const unsigned short TS_PACKET_SYNC_BYTE = 0x47;
