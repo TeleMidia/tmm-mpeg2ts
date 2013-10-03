@@ -62,13 +62,12 @@ namespace dsmcc {
 
 		memset(buffer, 0xFF, 20);
 		dsi = new DownloadServerInitiate();
-		dsi->setExtensionId(transactionId & 0xFFFF0000);
+		dsi->setExtensionId(transactionId);
 		dsi->setServerId(buffer, 20);
 
 		len = moduleManager->getSrgIorStream(&srgIorStream);
 		dsi->setPrivateDataByte(srgIorStream, len);
 		delete srgIorStream;
-		dsi->setExtensionId(0);
 
 		return 0;
 	}
