@@ -9,9 +9,9 @@
 #define EIT_H_
 
 #include "PrivateSection.h"
-#include "si/Descriptor/ShortEvent.h"
-#include "si/Descriptor/Component.h"
-#include "si/Descriptor/ParentalRating.h"
+#include "si/descriptor/ShortEvent.h"
+#include "si/descriptor/Component.h"
+#include "si/descriptor/ParentalRating.h"
 #include "si/Tot.h"
 #include "Crc32.h"
 
