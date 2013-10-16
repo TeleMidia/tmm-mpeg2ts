@@ -343,7 +343,7 @@ namespace dsmcc {
 			{
 				// build the full path for each file in the folder
 				sprintf(filepath, "%s%s", folder.c_str(), next_file->d_name);
-				if (next_file->d_name[0] != '.') continue;
+				if (next_file->d_name[0] == '.') continue;
 				if (S_ISDIR( filestat.st_mode )) continue;
 				remove(filepath);
 			}
