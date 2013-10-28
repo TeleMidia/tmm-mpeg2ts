@@ -283,6 +283,11 @@ namespace dsmcc {
 				}
 				lsn--;
 			}
+			if (lsn > 0xFF) {
+				lsn = 0xFF;
+				cout << "Warning: carousel may not be compatible with all decoders." << endl;
+				cout << "Tip: Avoid inserting files larger than 1016 KB." << endl;
+			}
 			blockNumber = 0;
 			blockRd = read(fdr, blockBuffer, blockSize);
 			while (blockRd > 0) {
@@ -396,8 +401,8 @@ namespace dsmcc {
 			++i;
 		}
 
-		minbs = max / 256;
-		if ((max % 256) > 0) {
+		minbs = max / 65536;
+		if ((max % 65536) > 0) {
 			minbs++;
 		}
 
