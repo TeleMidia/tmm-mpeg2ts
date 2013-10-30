@@ -52,6 +52,7 @@ namespace dsmcc {
 			int makeDSI();
 			int makeDII();
 			int encapsulateCarousel(string outputFile, string tempFolder);
+			int encapsulateCarouselNP(string outputFile, string tempFolder);
 			int writeSections(int fd, vector<DSMCCSection*>* section);
 			void clearSectionList(vector<DSMCCSection*>* sectionList);
 			void checkMinBlockSize();

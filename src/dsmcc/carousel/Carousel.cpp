@@ -116,7 +116,7 @@ namespace dsmcc {
 
 		checkMinBlockSize();
 
-		maxbs = 4066 - dii->getAdaptationLength();
+		maxbs = 65529 - dii->getAdaptationLength();
 		if (blockSize > maxbs) {
 			blockSize = maxbs;
 			cout << "Resizing BlockSize to " << blockSize <<
@@ -333,6 +333,153 @@ namespace dsmcc {
 		return 0;
 	}
 
+	//This method encapsulates a carousel using Felippe Nagato's perspective.
+	//Files can reach up to ~4GB. Just one semantic have changed and the method
+	//used to encapsulate each block.
+	int Carousel::encapsulateCarouselNP(string outputFile, string tempFolder) {
+		char* buffer;
+		char* blockBuffer;
+		unsigned short blockNumber;
+		unsigned int sn, lsn, streamLength, length, pos, fd, fdr, blockRd, t;
+		DSMCCSection* section = NULL;
+		vector<DSMCCSection*> sectionList;
+		vector<DSMCCSection*> dsiDiiSectionList;
+		map<unsigned short, Module*>* ml = NULL;
+		map<unsigned short, Module*>::iterator i;
+		DownloadDataBlock* ddb = NULL;
+		MessageHeader* msg;
+		string modFileName;
+
+		fd = getWriteFD(outputFile);
+		if (fd < 0) {
+			return -1;
+		}
+
+		continuityCounter = 0;
+
+		for (t = 0; t < 2; t++) {
+			if (t == 0) {
+				msg = dsi;
+			} else {
+				msg = dii;
+			}
+			streamLength = msg->getStream(&buffer);
+			pos = 0;
+			sn = 0;
+			lsn = streamLength / 4084;
+			if (lsn > 0) {
+				if ((streamLength % 4084) > 0) {
+					lsn += 1;
+				}
+				lsn--;
+			}
+			while (pos < streamLength) {
+				section = new DSMCCSection();
+				section->setTableId(0x3B);
+				section->setSectionNumber(sn);
+				section->setLastSectionNumber(lsn);
+				section->setTableIdExtension((msg->getExtensionId() & 0xFFFF));
+				section->setCurrentNextIndicator(1);
+				sn++;
+				if ((pos + 4084) > streamLength) {
+					length = streamLength - pos;
+				} else {
+					length = 4084;
+				}
+				section->setPrivateDataByte(buffer + pos, length);
+				pos += length;
+				dsiDiiSectionList.push_back(section);
+			}
+
+			delete msg;
+		}
+
+		dsi = NULL;
+		dii = NULL;
+
+		blockBuffer = new char[blockSize]; //Block size should be set to 65529.
+		ml = moduleManager->getModuleList();
+		i = ml->begin();
+		while (i != ml->end()) {
+			if (writeSections(fd, &dsiDiiSectionList) < 0) {
+				close(fd);
+				delete blockBuffer;
+				return -2;
+			}
+			modFileName = tempFolder+"/mod-"+intToStrHexa(i->first)+".bin";
+			if (isDir(modFileName) != 0) {
+				delete blockBuffer;
+				return -3;
+			}
+			fdr = getReadFD(modFileName);
+			if (fdr <= 0) {
+				close(fd);
+				delete blockBuffer;
+				return -4;
+			} //highest module size: 4294508544 bytes
+			blockNumber = 0;
+			blockRd = read(fdr, blockBuffer, blockSize);
+			while (blockRd > 0) {
+				pos = 0;
+				ddb = new DownloadDataBlock();
+				ddb->setExtensionId(serviceDomain);
+				ddb->setModuleId(i->first);
+				ddb->setModuleVersion(0x01);
+				ddb->setBlockDataByte(blockBuffer, blockRd);
+				ddb->setBlockNumber(blockNumber);
+				streamLength = ddb->getStream(&buffer);
+				sn = 0;
+				lsn = streamLength / 4084;
+				if (lsn > 0) {
+					if ((streamLength % 4084) > 0) {
+						lsn += 1;
+					}
+					lsn--;
+				}
+				while (pos < streamLength) {
+					//DDB encapsulation has changed.
+					section = new DSMCCSection();
+					section->setTableId(0x3C);
+					section->setSectionNumber(sn);
+					section->setLastSectionNumber(lsn);
+					section->setTableIdExtension(blockNumber); //semantic changed
+					section->setCurrentNextIndicator(1);
+					sn++;
+					if ((pos + 4084) > streamLength) {
+						length = streamLength - pos;
+					} else {
+						length = 4084;
+					}
+					section->setPrivateDataByte(buffer + pos, length);
+					pos += length;
+					sectionList.push_back(section);
+				}
+
+				delete ddb;
+
+				if (writeSections(fd, &sectionList) < 0) {
+					close(fdr);
+					close(fd);
+					delete blockBuffer;
+					return -5;
+				}
+
+				clearSectionList(&sectionList);
+
+				blockNumber++;
+				blockRd = read(fdr, blockBuffer, blockSize);
+			}
+
+			close(fdr);
+			++i;
+		}
+
+		close(fd);
+		delete blockBuffer;
+
+		return 0;
+	}
+
 	int Carousel::writeSections(int fd, vector<DSMCCSection*>* sectionList) {
 		TSPacket* packet = NULL;
 		vector<DSMCCSection*>::iterator i;
@@ -401,8 +548,8 @@ namespace dsmcc {
 			++i;
 		}
 
-		minbs = max / 65536;
-		if ((max % 65536) > 0) {
+		minbs = max / 65529;
+		if ((max % 65529) > 0) {
 			minbs++;
 		}
 
