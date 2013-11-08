@@ -58,6 +58,7 @@ namespace mpeg2 {
 		payload = new char[TS_PAYLOAD_SIZE];
 		payload2 = new char[TS_PAYLOAD_SIZE];
 		transportErrorIndication = 0;
+		transportScramblingControl = 0;
 		sectionType = 1;
 		payloadSize = 0;
 		tsaf = NULL;
@@ -72,6 +73,7 @@ namespace mpeg2 {
 		tsaf = NULL;
 		sectionType = 1;
 		transportErrorIndication = 0;
+		transportScramblingControl = 0;
 	}
 
 	/*
@@ -356,7 +358,7 @@ namespace mpeg2 {
 			} else if (adaptationFieldControl == 2) {
 				//adaptation field only
 				if (tsaf != NULL) {
-					//tsaf->setAdaptationFieldLength(183);
+					tsaf->setAdaptationFieldLength(183);
 					len = tsaf->getStream(afbuffer);
 					memcpy(stream + 4, afbuffer, len);
 					return 0;
@@ -389,7 +391,7 @@ namespace mpeg2 {
 			} else if (adaptationFieldControl == 2) {
 				//adaptation field only
 				if (tsaf != NULL) {
-					//tsaf->setAdaptationFieldLength(183);
+					tsaf->setAdaptationFieldLength(183);
 					len = tsaf->getStream(afbuffer);
 					memcpy(stream + 4, afbuffer, len);
 					return 0;

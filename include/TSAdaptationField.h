@@ -49,7 +49,7 @@ http://www.telemidia.puc-rio.br
 #ifndef TSADAPTATIONFIELD_H_
 #define TSADAPTATIONFIELD_H_
 
-#define MAX_ADAPTATION_FIELD_SIZE 183
+#define MAX_ADAPTATION_FIELD_SIZE 184
 #define MAX_PRIVATE_DATA_SIZE 255
 
 #include "Stc.h"
