@@ -144,6 +144,8 @@ int StreamEvent::updateStream() {
 	memcpy(stream + pos, privateDataPayload, privateDataPayloadLength);
 	pos = pos + privateDataPayloadLength;
 
+	fcs = StreamEvent::calculateChecksum(stream + 12, privateDataLength);
+
 	stream[pos++] = (fcs & 0xFF);
 
 	return pos;
@@ -180,6 +182,10 @@ unsigned char StreamEvent::getFinalFlag() {
 
 int StreamEvent::getPrivateDataPayload(char** dataStream) {
 	*dataStream = privateDataPayload;
+	return privateDataPayloadLength;
+}
+
+unsigned char StreamEvent::getPrivateDataPayloadLength() {
 	return privateDataPayloadLength;
 }
 
@@ -225,6 +231,14 @@ int StreamEvent::setPrivateDataPayload(char* data, unsigned char length) {
 
 void StreamEvent::setFcs(unsigned char fcs) {
 	this->fcs = fcs;
+}
+
+unsigned char StreamEvent::calculateChecksum(char* stream, int length) {
+	unsigned char cs = 0;
+	for (int i = 0; i < length; i++) {
+		cs += stream[i];
+	}
+	return cs;
 }
 
 }
