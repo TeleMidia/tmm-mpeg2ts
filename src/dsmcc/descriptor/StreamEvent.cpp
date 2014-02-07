@@ -123,10 +123,10 @@ int StreamEvent::updateStream() {
 	stream[pos++] = 0xFF;
 	stream[pos]   = 0xFE;
 
-	pos = pos + 5;
-	stream[pos + 1] = stream[pos + 1] | ((eventNPT >> 32) & 0x01);
+	stream[pos] = stream[pos] | ((eventNPT >> 32) & 0x01);
 
 	pos++;
+
 	stream[pos++] = (eventNPT >> 24) & 0xFF;
 	stream[pos++] = (eventNPT >> 16) & 0xFF;
 	stream[pos++] = (eventNPT >> 8) & 0xFF;
@@ -137,14 +137,14 @@ int StreamEvent::updateStream() {
 	stream[pos++] = privateDataLength & 0xFF;
 	stream[pos++] = commandTag & 0xFF;
 	stream[pos] = (sequenceNumber << 1) & 0xFE;
+	stream[pos] = stream[pos] | (finalFlag & 0x01);
 
 	pos++;
-	stream[pos] = stream[pos] | (finalFlag & 0x01);
 
 	memcpy(stream + pos, privateDataPayload, privateDataPayloadLength);
 	pos = pos + privateDataPayloadLength;
 
-	fcs = StreamEvent::calculateChecksum(stream + 12, privateDataLength);
+	fcs = StreamEvent::calculateChecksum(stream + 12, privateDataLength - 1);
 
 	stream[pos++] = (fcs & 0xFF);
 
@@ -160,7 +160,7 @@ unsigned short StreamEvent::getEventId() {
 	return eventId;
 }
 
-uint64_t StreamEvent::getEventNPT() {
+int64_t StreamEvent::getEventNPT() {
 	return eventNPT;
 }
 
@@ -197,7 +197,7 @@ void StreamEvent::setEventId(unsigned short id) {
 	eventId = id;
 }
 
-void StreamEvent::setEventNPT(uint64_t npt) {
+void StreamEvent::setEventNPT(int64_t npt) {
 	eventNPT = npt;
 }
 

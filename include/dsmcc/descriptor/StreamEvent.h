@@ -110,7 +110,7 @@ class StreamEvent : public MpegDescriptor {
 
 	protected:
 		unsigned short eventId;
-		uint64_t eventNPT;
+		int64_t eventNPT;
 		unsigned char privateDataLength;
 		unsigned char commandTag;
 		unsigned char sequenceNumber;
@@ -130,7 +130,7 @@ class StreamEvent : public MpegDescriptor {
 		virtual ~StreamEvent();
 
 		unsigned short getEventId();
-		uint64_t getEventNPT();
+		int64_t getEventNPT();
 		unsigned char getPrivateDataLength();
 		unsigned char getCommandTag();
 		unsigned char getSequenceNumber();
@@ -140,7 +140,7 @@ class StreamEvent : public MpegDescriptor {
 		unsigned char getFcs();
 
 		void setEventId(unsigned short id);
-		void setEventNPT(uint64_t npt);
+		void setEventNPT(int64_t npt);
 		void setCommandTag(unsigned char tag);
 		void setSequenceNumber(unsigned char seqNum);
 		void setFinalFlag(unsigned char flag);
