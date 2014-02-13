@@ -22,8 +22,6 @@ namespace dsmcc {
 		objectInfo = NULL;
 		objectInfoByte = NULL;
 		objectInfoLength = 0;
-		tapsList = new vector<Tap*>;
-		tapsCount = 0;
 		objectInfoByteLength = 0;
 	}
 
@@ -31,10 +29,7 @@ namespace dsmcc {
 		if (objectInfo != NULL) {
 			delete (objectInfo);
 		}
-		if (this->tapsList != NULL) {
-			clearTapsList();
-			delete (tapsList);
-		}
+		clearTapsList();
 	}
 
 	int64_t StreamMessage::updateStream() {
@@ -70,19 +65,18 @@ namespace dsmcc {
 		stream[pos++] = (messageBodyLength >> 16) & 0xFF;
 		stream[pos++] = (messageBodyLength >> 8) & 0xFF;
 		stream[pos++] = messageBodyLength & 0xFF;
-		stream[pos++] = tapsCount & 0xFF;
+		stream[pos++] = tapsList.size() & 0xFF;
 
 		Tap* tp;
 		vector<Tap*>::iterator tpIt;
-		if ((tapsList != NULL) && (!tapsList->empty())) {
-			tpIt = tapsList->begin();
-			while (tpIt != tapsList->end()) {
-				tp = *tpIt;
-				tempStrLen = tp->getStream(&tempStr) - 10;
-				memcpy(stream + pos, tempStr, tempStrLen);
-				pos = pos + tempStrLen;
-				++tpIt;
-			}
+		tpIt = tapsList.begin();
+		while (tpIt != tapsList.end()) {
+			tp = *tpIt;
+			tp->setSelectorLength(0);
+			tempStrLen = tp->getStream(&tempStr);
+			memcpy(stream + pos, tempStr, tempStrLen);
+			pos = pos + tempStrLen;
+			++tpIt;
 		}
 
 		streamSize = pos;
@@ -92,7 +86,8 @@ namespace dsmcc {
 
 	unsigned int StreamMessage::calculateMessageSize() {
 		unsigned int pos = BiopMessage::calculateMessageSize();
-		pos += objectInfo->getStreamLength() + objectInfoLength;
+		vector<Tap*>::iterator i;
+
 		ServiceContext* sc;
 		vector<ServiceContext*>::iterator scIt;
 		if ((serviceContextList != NULL) && (!serviceContextList->empty())) {
@@ -103,9 +98,15 @@ namespace dsmcc {
 				++scIt;
 			}
 		}
-		if ((tapsList != NULL) && (!tapsList->empty())) {
-			pos += (tapsList->size() * 7); /* (17 bytes per tap) */
+
+		messageBodyLength = 1;
+		i = tapsList.begin();
+		while (i != tapsList.end()) {
+			pos += (*i)->getStreamLength();
+			messageBodyLength += (*i)->getStreamLength();
+			++i;
 		}
+
 		return pos + 6;
 	}
 
@@ -114,16 +115,16 @@ namespace dsmcc {
 	}
 
 	int StreamMessage::getObjectInfoByte(char* data) {
-		memcpy(data, objectInfoByte, objectInfoLength);
-		return objectInfoLength;
+		memcpy(data, objectInfoByte, objectInfoByteLength);
+		return objectInfoByteLength;
 	}
 
 	unsigned char StreamMessage::getTapsCount() {
-		return tapsCount;
+		return tapsList.size();
 	}
 
 	vector<Tap*>* StreamMessage::getTapsList() {
-		return tapsList;
+		return &tapsList;
 	}
 
 	void StreamMessage::setObjectInfo(StreamInfoT* oi) {
@@ -133,9 +134,9 @@ namespace dsmcc {
 		objectInfo = oi;
 		if (objectInfo != NULL) {
 			objectInfoLength = objectInfoByteLength +
-				objectInfo->getDescriptionLength() + 10;
+				objectInfo->getStreamLength();
 		} else {
-			objectInfoLength = objectInfoByteLength + 10;
+			objectInfoLength = objectInfoByteLength + 12;
 		}
 	}
 
@@ -153,35 +154,26 @@ namespace dsmcc {
 
 		if (objectInfo != NULL) {
 			objectInfoLength = objectInfoByteLength +
-				objectInfo->getDescriptionLength() + 10;
+				objectInfo->getStreamLength();
 		} else {
-			objectInfoLength = objectInfoByteLength + 10;
+			objectInfoLength = objectInfoByteLength + 12;
 		}
 
-		return objectInfoLength;
+		return objectInfoByteLength;
 	}
 
-	void StreamMessage::setTapsList(vector<Tap*>* tl) {
-		if (this->tapsList != NULL) {
-			clearTapsList();
-			delete (tapsList);
-		}
-		this->tapsList = tl;
-		tapsCount = tapsList->size();
+	void StreamMessage::addTap(Tap* tap) {
+		tapsList.push_back(tap);
 	}
 
 	void StreamMessage::clearTapsList() {
-		Tap* t;
 		vector<Tap*>::iterator i;
-		if ((tapsList != NULL) && (!tapsList->empty())) {
-			i = tapsList->begin();
-			while (i != tapsList->end()) {
-				t = *i;
-				delete (t);
-				++i;
-			}
-			tapsList->clear();
+		i = tapsList.begin();
+		while (i != tapsList.end()) {
+			delete (*i);
+			++i;
 		}
+		tapsList.clear();
 	}
 
 }

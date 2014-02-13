@@ -33,6 +33,7 @@ namespace dsmcc {
 		if (dii != NULL) {
 			delete dii;
 		}
+		releaseStreamEventMessageList();
 	}
 
 	void Carousel::setPid(unsigned short pid) {
@@ -156,6 +157,7 @@ namespace dsmcc {
 		}
 
 		moduleManager->setTransactionId(transactionId);
+		moduleManager->setSeMessageList(&seMessageList);
 
 		result = moduleManager->makeModules(serviceDomain);
 		if (result >= 0) {
@@ -615,6 +617,20 @@ namespace dsmcc {
 
 	void Carousel::setServiceGatewayFolder(string path) {
 		serviceGatewayFolder = path;
+	}
+
+	void Carousel::addStreamEventMessage(StreamEventMessage* sem) {
+		seMessageList.push_back(sem);
+	}
+
+	void Carousel::releaseStreamEventMessageList() {
+		vector<StreamEventMessage*>::iterator it;
+		it = seMessageList.begin();
+		while (it != seMessageList.end()) {
+			delete (*it);
+			++it;
+		}
+		seMessageList.clear();
 	}
 
 }

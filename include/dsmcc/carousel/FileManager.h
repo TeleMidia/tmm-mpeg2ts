@@ -38,6 +38,7 @@ namespace dsmcc {
 			map<string,InternalIor*>* fileList;
 			vector<pair<unsigned int, string> >* fileSizeList;
 			map<string,unsigned int>* allItems;
+			unsigned int key;
 
 			void createOrderedFolderList();
 			void clearIorList(map<string,InternalIor*>* list);
@@ -57,6 +58,7 @@ namespace dsmcc {
 			map<string,unsigned int>* getAllItems();
 			vector<pair<unsigned int, string> >* getFileSizeList();
 			vector<string>* getOrderedFolderList();
+			unsigned int getNextAvailableKey();
 
 			map<string,InternalIor*>* getFileList();
 			void showAllItems();

@@ -18,6 +18,7 @@ namespace dsmcc {
 		moduleList = new map<unsigned short, Module*>;
 		serviceGatewayFolder = "";
 		tempFolder = "";
+		seMessageList = NULL;
 	}
 
 	ModuleManager::~ModuleManager() {
@@ -88,11 +89,13 @@ namespace dsmcc {
 		unsigned short moduleNum = 0;
 		vector<pair<unsigned int, string> >* fileSizeList;
 		vector<pair<unsigned int, string> >::iterator i;
+		vector<StreamEventMessage*>::iterator itSem;
 		vector<string>* orderedFolderList;
 		vector<string>::iterator j;
 		FileMessage* file;
 		DirectoryMessage* dir;
 		Module* module = NULL;
+		unsigned int key;
 
 		if (serviceGatewayFolder == "") {
 			return -1;
@@ -135,8 +138,10 @@ namespace dsmcc {
 			}
 			++j;
 		}
-		(*moduleList)[moduleNum] = module;
-		module = NULL;
+		if (module) {
+			(*moduleList)[moduleNum] = module;
+			module = NULL;
+		}
 
 		//files
 		fileSizeList = fm->getFileSizeList();
@@ -170,8 +175,37 @@ namespace dsmcc {
 			}
 			++i;
 		}
-		(*moduleList)[moduleNum] = module;
-		module = NULL;
+		if (module) {
+			(*moduleList)[moduleNum] = module;
+			module = NULL;
+		}
+
+		//StreamEvent
+		key = fm->getNextAvailableKey();
+		itSem = seMessageList->begin();
+		while (itSem != seMessageList->end()) {
+			(*itSem)->setObjectKeyData(key++);
+			if (module == NULL) {
+				module = new Module();
+				moduleNum++;
+				module->setModuleId(moduleNum);
+			}
+			if (!module->addBiop(*itSem)) {
+				//Module is full
+				(*moduleList)[moduleNum] = module;
+				module = new Module();
+				moduleNum++;
+				module->setModuleId(moduleNum);
+				if (!module->addBiop(*itSem)) {
+					return -4;
+				}
+			}
+			++itSem;
+		}
+		if (module) {
+			(*moduleList)[moduleNum] = module;
+			module = NULL;
+		}
 
 		if (!saveModules()) {
 			return -7;
@@ -358,6 +392,10 @@ namespace dsmcc {
 
 	FileManager* ModuleManager::getFileManager() {
 		return fm;
+	}
+
+	void ModuleManager::setSeMessageList(vector<StreamEventMessage*>* seml) {
+		seMessageList = seml;
 	}
 
 }

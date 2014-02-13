@@ -47,18 +47,20 @@ namespace dsmcc {
 		stream[pos++] = (assocTag >> 8) & 0xFF;
 		stream[pos++] = assocTag & 0xFF;
 		stream[pos++] = selectorLength & 0xFF;
-		stream[pos++] = (selectorType >> 8) & 0xFF;
-		stream[pos++] = selectorType & 0xFF;
-		stream[pos++] = (transactionId >> 24) & 0xFF;
-		stream[pos++] = (transactionId >> 16) & 0xFF;
-		stream[pos++] = (transactionId >> 8) & 0xFF;
-		stream[pos++] = transactionId & 0xFF;
-		stream[pos++] = (timeout >> 24) & 0xFF;
-		stream[pos++] = (timeout >> 16) & 0xFF;
-		stream[pos++] = (timeout >> 8) & 0xFF;
-		stream[pos++] = timeout & 0xFF;
+		if (selectorLength) {
+			stream[pos++] = (selectorType >> 8) & 0xFF;
+			stream[pos++] = selectorType & 0xFF;
+			stream[pos++] = (transactionId >> 24) & 0xFF;
+			stream[pos++] = (transactionId >> 16) & 0xFF;
+			stream[pos++] = (transactionId >> 8) & 0xFF;
+			stream[pos++] = transactionId & 0xFF;
+			stream[pos++] = (timeout >> 24) & 0xFF;
+			stream[pos++] = (timeout >> 16) & 0xFF;
+			stream[pos++] = (timeout >> 8) & 0xFF;
+			stream[pos++] = timeout & 0xFF;
+		}
 
-		return 17;
+		return pos;
 	}
 
 	unsigned short Tap::getId() {
@@ -118,23 +120,30 @@ namespace dsmcc {
 	}
 
 	int Tap::getStreamLength() {
-		return 17;
+		int pos = 7;
+		if (selectorLength) {
+			pos += 10;
+		}
+		return pos;
 	}
 
 	int Tap::getStream(char* dataStream) {
-		if (updateStream() >= 0) {
-			memcpy(dataStream, stream, 17);
-			return 17;
+		int pos = updateStream();
+		if (pos > 0) {
+			memcpy(dataStream, stream, pos);
+			return pos;
 		} else {
 			return -1;
 		}
 	}
 
 	int Tap::getStream(char** dataStream) {
-		if (updateStream() >= 0) {
+		int pos = updateStream();
+		if (pos > 0) {
 			*dataStream = stream;
-			return 17;
+			return pos;
 		} else {
+			*dataStream = NULL;
 			return -1;
 		}
 	}

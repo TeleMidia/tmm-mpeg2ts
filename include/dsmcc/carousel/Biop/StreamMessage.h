@@ -28,11 +28,9 @@ namespace dsmcc {
 
 		protected:
 			StreamInfoT* objectInfo;
-			unsigned short objectInfoLength;
 			unsigned short objectInfoByteLength;
 			char* objectInfoByte;
-			unsigned char tapsCount;
-			vector<Tap*>* tapsList;
+			vector<Tap*> tapsList;
 
 			virtual int64_t updateStream();
 			virtual unsigned int calculateMessageSize();
@@ -48,7 +46,7 @@ namespace dsmcc {
 
 			void setObjectInfo(StreamInfoT* oi);
 			int setObjectInfoByte(char* data, unsigned short length);
-			void setTapsList(vector<Tap*>* tl);
+			void addTap(Tap* tap);
 
 	 };
 }

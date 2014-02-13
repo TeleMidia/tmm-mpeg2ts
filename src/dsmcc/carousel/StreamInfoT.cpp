@@ -20,6 +20,8 @@ namespace dsmcc {
 		audio = 0;
 		video = 0;
 		data = 0;
+		duration.aSeconds = 0;
+		duration.aMicroSeconds = 0;
 	}
 
 	StreamInfoT::StreamInfoT(char* dataStream, unsigned char length) {

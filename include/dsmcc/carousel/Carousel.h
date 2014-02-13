@@ -42,6 +42,7 @@ namespace dsmcc {
 			unsigned short blockSize;
 			unsigned int serviceDomain;
 			unsigned int transactionId;
+			vector<StreamEventMessage*> seMessageList;
 			bool sectionEncapsulationMode;
 			string serviceGatewayFolder;
 			DownloadServerInitiate* dsi;
@@ -70,11 +71,14 @@ namespace dsmcc {
 			unsigned int getDownloadId();
 			unsigned int getTransactionId();
 			string getServiceGatewayFolder();
+
 			void setBlockSize(unsigned short size);
 			void setServiceDomain(unsigned int sd);
 			void setDownloadId(unsigned int id);
 			void setTransactionId(unsigned int id);
 			void setServiceGatewayFolder(string path);
+			void addStreamEventMessage(StreamEventMessage* sem);
+			void releaseStreamEventMessageList();
 
 			bool getSectionEncapsulationMode();
 			void setSectionEncapsulationMode(bool active);

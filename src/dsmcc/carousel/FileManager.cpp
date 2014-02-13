@@ -19,6 +19,7 @@ namespace dsmcc {
 		fileList = new map<string,InternalIor*>;
 		fileSizeList = new vector<pair<unsigned int, string> >;
 		allItems = new map<string,unsigned int>;
+		key = 0;
 	}
 
 	FileManager::~FileManager() {
@@ -42,7 +43,6 @@ namespace dsmcc {
 	}
 
 	string FileManager::readSrg(string path) {
-		unsigned int key = 0;
 		int result;
 		vector<string> all;
 		vector<string>::iterator it;
@@ -64,6 +64,7 @@ namespace dsmcc {
 		clearIorList(fileList);
 		allItems->clear();
 		fileSizeList->clear();
+		key = 0;
 
 		all.push_back(path);
 		travelAllDir(path, &all);
@@ -88,6 +89,8 @@ namespace dsmcc {
 				return "";
 			}
 		}
+
+		key++;
 
 		createOrderedFolderList();
 
@@ -204,6 +207,10 @@ namespace dsmcc {
 
 	vector<string>* FileManager::getOrderedFolderList() {
 		return orderedFolderList;
+	}
+
+	unsigned int FileManager::getNextAvailableKey() {
+		return key;
 	}
 
 	void FileManager::createOrderedFolderList() {

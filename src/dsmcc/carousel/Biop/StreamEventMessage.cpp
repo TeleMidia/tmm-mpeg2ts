@@ -15,15 +15,10 @@ namespace dsmcc {
 
 	StreamEventMessage::StreamEventMessage() : StreamMessage(){
 		objectKindData[2] = 0x65;
-		eventNameList = new vector<eventName*>;
 	}
 
 	StreamEventMessage::~StreamEventMessage() {
-		if (eventNameList != NULL) {
-			clearEventNameList();
-			delete (eventNameList);
-		}
-
+		clearEventNameList();
 	}
 
 	int64_t StreamEventMessage::updateStream() {
@@ -36,12 +31,12 @@ namespace dsmcc {
 		memcpy(stream + pos, tempStr, tempStrLen);
 		pos = pos + tempStrLen;
 
-		if ((eventNameList != NULL) && (!eventNameList->empty())) {
-			unsigned short int size = eventNameList->size();
+		if (!eventNameList.empty()) {
+			unsigned short int size = eventNameList.size();
 			stream[pos++] = (size >> 8) & 0xFF;
 			stream[pos++] = size & 0xFF;
-			enIt = eventNameList->begin();
-			while (enIt != eventNameList->end()) {
+			enIt = eventNameList.begin();
+			while (enIt != eventNameList.end()) {
 				en = *enIt;
 				stream[pos++] = en->eventNameLength & 0xFF;
 				memcpy(stream+pos, en->eventNameData, en->eventNameLength);
@@ -75,27 +70,25 @@ namespace dsmcc {
 		stream[pos++] = (messageBodyLength >> 16) & 0xFF;
 		stream[pos++] = (messageBodyLength >> 8) & 0xFF;
 		stream[pos++] = messageBodyLength & 0xFF;
-		stream[pos++] = tapsCount & 0xFF;
+		stream[pos++] = tapsList.size() & 0xFF;
 
 		Tap* tp;
 		vector<Tap*>::iterator tpIt;
-		if ((tapsList != NULL) && (!tapsList->empty())) {
-			tpIt = tapsList->begin();
-			while (tpIt != tapsList->end()) {
-				tp = *tpIt;
-				tempStrLen = tp->getStream(&tempStr);
-				memcpy(stream + pos, tempStr, tempStrLen);
-				pos = pos + tempStrLen;
-				++tpIt;
-			}
+		tpIt = tapsList.begin();
+		while (tpIt != tapsList.end()) {
+			tp = *tpIt;
+			tempStrLen = tp->getStream(&tempStr);
+			memcpy(stream + pos, tempStr, tempStrLen);
+			pos = pos + tempStrLen;
+			++tpIt;
 		}
 
-		unsigned short int size = eventNameList->size();
+		unsigned short int size = eventNameList.size();
 		stream[pos++] = size & 0xFF;
 
 		unsigned short int eId;
-		enIt = eventNameList->begin();
-		while (enIt != eventNameList->end()) {
+		enIt = eventNameList.begin();
+		while (enIt != eventNameList.end()) {
 			en = *enIt;
 			eId = en->eventId;
 			stream[pos++] = (eId >> 8) & 0xFF;
@@ -110,43 +103,69 @@ namespace dsmcc {
 
 	unsigned int StreamEventMessage::calculateMessageSize() {
 		unsigned int pos = StreamMessage::calculateMessageSize();
+
+		pos += (eventNameList.size() * 2);
+
+		messageBodyLength += 1 + (eventNameList.size() * 2);
+
+		return pos + 1;
+	}
+
+	unsigned int StreamEventMessage::calculateEventNameSize() {
 		eventName* en;
 		vector<eventName*>::iterator enIt;
-		enIt = eventNameList->begin();
-		while (enIt != eventNameList->end()) {
+		unsigned int len = 0;
+
+		enIt = eventNameList.begin();
+		while (enIt != eventNameList.end()) {
 			en = *enIt;
-			pos += en->eventNameLength + 1;
+			len += en->eventNameLength + 1;
 			++enIt;
 		}
-		pos += (eventNameList->size() * 2);
-		return pos + 3;
+
+		return len + 2;
+	}
+
+	void StreamEventMessage::setObjectInfo(StreamInfoT* oi) {
+		StreamMessage::setObjectInfo(oi);
+		objectInfoLength += calculateEventNameSize();
+
 	}
 
 	int StreamEventMessage::addEvent(
 			unsigned short id, char* name, unsigned char length) {
 		eventName* en;
-		if (eventNameList->size() >= 65535) {
+
+		if (eventNameList.size() >= 65535) {
 			return -1;
 		}
+
 		en = new eventName();
 		en->eventId = id;
 		en->eventNameLength = length;
+		en->eventNameData = new char[length];
 		memcpy(en->eventNameData, name, length);
-		eventNameList->push_back(en);
-		return eventNameList->size();
+		eventNameList.push_back(en);
+
+		objectInfoLength = objectInfoByteLength +
+						   objectInfo->getStreamLength() +
+						   calculateEventNameSize();
+
+		return eventNameList.size();
 	}
 
 	void StreamEventMessage::clearEventNameList() {
 		eventName* en;
 		vector<eventName*>::iterator i;
-		if ((eventNameList != NULL) && (!eventNameList->empty())) {
-			i = eventNameList->begin();
-			while (i != eventNameList->end()) {
+		if (!eventNameList.empty()) {
+			i = eventNameList.begin();
+			while (i != eventNameList.end()) {
 				en = *i;
+				delete en->eventNameData;
 				delete (en);
 				++i;
 			}
-			eventNameList->clear();
+			eventNameList.clear();
 		}
 	}
 }

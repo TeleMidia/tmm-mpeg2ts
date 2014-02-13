@@ -11,6 +11,8 @@
 #include "dsmcc/carousel/Module.h"
 #include "dsmcc/carousel/Biop/FileMessage.h"
 #include "dsmcc/carousel/Biop/DirectoryMessage.h"
+#include "dsmcc/carousel/Biop/StreamMessage.h"
+#include "dsmcc/carousel/Biop/StreamEventMessage.h"
 #include "dsmcc/carousel/FileManager.h"
 
 #include <iostream>
@@ -34,6 +36,7 @@ namespace dsmcc {
 			map<unsigned short, Module*>* moduleList;
 			string tempFolder, serviceGatewayFolder;
 			unsigned int transactionId;
+			vector<StreamEventMessage*>* seMessageList;
 
 			bool createFileMessage(string filename, FileMessage* file);
 			bool createDirMessage(string path, DirectoryMessage* dir);
@@ -53,6 +56,7 @@ namespace dsmcc {
 			int makeModules(unsigned int serviceDomain);
 			map<unsigned short, Module*>* getModuleList();
 			FileManager* getFileManager();
+			void setSeMessageList(vector<StreamEventMessage*>* seml);
 
 	 };
 }

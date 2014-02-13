@@ -30,15 +30,17 @@ namespace dsmcc {
 		private:
 
 		protected:
-			vector<eventName*>* eventNameList;
+			vector<eventName*> eventNameList;
 
 			int64_t updateStream();
 			unsigned int calculateMessageSize();
+			unsigned int calculateEventNameSize();
 
 		public:
 			StreamEventMessage();
 			~StreamEventMessage();
 
+			void setObjectInfo(StreamInfoT* oi);
 			int addEvent(unsigned short id, char* name, unsigned char length);
 			void clearEventNameList();
 

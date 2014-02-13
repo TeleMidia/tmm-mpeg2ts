@@ -21,11 +21,12 @@ namespace dsmcc {
 		byteOrder = 0x00;
 		messageType = 0x00;
 		serviceContextList = new vector<ServiceContext*>;
-		messageSize = calculateMessageSize();
+		objectInfoLength = 0;
 		objectKeyLength = 4;
 		objectKindLength = 4;
 		serviceContextListCount = 0;
 		messageBodyLength = 0;
+		messageSize = calculateMessageSize();
 	}
 
 	BiopMessage::~BiopMessage() {
@@ -85,7 +86,7 @@ namespace dsmcc {
 	}
 
 	unsigned int BiopMessage::calculateMessageSize() {
-		return objectInfoLength + objectKindLength + 11;
+		return objectInfoLength + objectKindLength + objectKeyLength + 7;
 	}
 
 	unsigned char BiopMessage::getBiopVersionMajor() {
