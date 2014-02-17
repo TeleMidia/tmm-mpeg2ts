@@ -78,7 +78,6 @@ namespace dsmcc {
 			void setTransactionId(unsigned int id);
 			void setServiceGatewayFolder(string path);
 			void addStreamEventMessage(StreamEventMessage* sem);
-			void releaseStreamEventMessageList();
 
 			bool getSectionEncapsulationMode();
 			void setSectionEncapsulationMode(bool active);

@@ -33,7 +33,6 @@ namespace dsmcc {
 		if (dii != NULL) {
 			delete dii;
 		}
-		releaseStreamEventMessageList();
 	}
 
 	void Carousel::setPid(unsigned short pid) {
@@ -621,16 +620,6 @@ namespace dsmcc {
 
 	void Carousel::addStreamEventMessage(StreamEventMessage* sem) {
 		seMessageList.push_back(sem);
-	}
-
-	void Carousel::releaseStreamEventMessageList() {
-		vector<StreamEventMessage*>::iterator it;
-		it = seMessageList.begin();
-		while (it != seMessageList.end()) {
-			delete (*it);
-			++it;
-		}
-		seMessageList.clear();
 	}
 
 }

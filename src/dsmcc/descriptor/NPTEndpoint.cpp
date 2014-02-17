@@ -13,7 +13,7 @@ namespace telemidia {
 namespace mpeg2 {
 namespace dsmcc {
 
-NPTEndpoint::NPTEndpoint() : MpegDescriptor(0x02) {
+NPTEndpoint::NPTEndpoint() : MpegDescriptor(0x18) {
 	descriptorLength = 14;
 	startNPT = 0;
 	stopNPT = 0;

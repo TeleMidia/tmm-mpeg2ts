@@ -101,25 +101,25 @@ int DSMCCSection::processSectionPayload() {
 			descriptorTag = stream[pos] & 0xFF;
 			descriptorSize = (stream[pos + 1] & 0xFF) + 2;
 			switch (descriptorTag) {
-				case 0x01: // NPT Reference
+				case 0x17: // NPT Reference
 					d = new NPTReference();
 					d->addData(stream + pos, descriptorSize);
 					addDsmccDescriptor(d);
 					break;
 
-				case 0x02: // NPT Endpoint
+				case 0x18: // NPT Endpoint
 					d = new NPTEndpoint();
 					d->addData(stream + pos, descriptorSize);
 					addDsmccDescriptor(d);
 					break;
 
-				case 0x03: // Stream Mode
+				case 0x19: // Stream Mode
 					d = new StreamMode();
 					d->addData(stream + pos, descriptorSize);
 					addDsmccDescriptor(d);
 					break;
 
-				case 0x04: // Stream Event
+				case 0x1A: // Stream Event
 					d = new StreamEvent();
 					d->addData(stream + pos, descriptorSize);
 					addDsmccDescriptor(d);

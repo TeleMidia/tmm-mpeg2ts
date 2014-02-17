@@ -54,7 +54,7 @@ namespace telemidia {
 namespace mpeg2 {
 namespace dsmcc {
 
-NPTReference::NPTReference() : MpegDescriptor(0x01) {
+NPTReference::NPTReference() : MpegDescriptor(0x17) {
 	postDiscontinuityIndicator = 0;
 	contentId = 0;
 	stcRef = 0;

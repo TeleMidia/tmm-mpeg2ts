@@ -54,7 +54,7 @@ namespace telemidia {
 namespace mpeg2 {
 namespace dsmcc {
 
-StreamMode::StreamMode() : MpegDescriptor(0x03) {
+StreamMode::StreamMode() : MpegDescriptor(0x19) {
 	streamMode = 0;
 	descriptorLength = 2;
 }

@@ -56,7 +56,7 @@ namespace telemidia {
 namespace mpeg2 {
 namespace dsmcc {
 
-StreamEvent::StreamEvent() : MpegDescriptor(0x04) {
+StreamEvent::StreamEvent() : MpegDescriptor(0x1A) {
 	privateDataPayloadLength = 0;
 	privateDataLength = 0;
 	privateDataPayload = NULL;
