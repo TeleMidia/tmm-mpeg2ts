@@ -546,6 +546,19 @@ namespace mpeg2 {
 		return -3;
 	}
 
+	bool PESPacket::setDataAlignmentIndicatorDirectStream(char* stream, bool ind) {
+		stream[6] = (stream[6] & 0xFB);
+		if (ind) {
+			stream[6] = stream[6] | 0x04;
+		}
+		return true;
+	}
+
+	bool PESPacket::setStreamIdDirectStream(char* stream, unsigned char id) {
+		stream[3] = id;
+		return true;
+	}
+
 	uint64_t PESPacket::getEscrBase() {
 		return escrBase;
 	}

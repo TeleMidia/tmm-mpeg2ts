@@ -163,6 +163,8 @@ class PESPacket {
 		static bool setDtsDirectStream(char* stream, uint64_t dts);
 		static int64_t getPtsDirectStream(char* stream);
 		static int64_t getDtsDirectStream(char* stream);
+		static bool setDataAlignmentIndicatorDirectStream(char* stream, bool ind);
+		static bool setStreamIdDirectStream(char* stream, unsigned char id);
 
 		uint64_t getEscrBase();
 		uint64_t getEscrExtension();
