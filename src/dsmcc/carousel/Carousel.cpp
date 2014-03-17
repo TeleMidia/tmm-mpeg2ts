@@ -17,7 +17,7 @@ namespace dsmcc {
 		moduleManager = new ModuleManager();
 		blockSize = 4066;
 		serviceDomain = 0x0A; // downloadId
-		transactionId = 0x80090002;
+		transactionId = 0x80090002;  //See ABNT NBR 15606-3 2012
 		sectionEncapsulationMode = false;
 		continuityCounter = 0;
 		pid = 0x384;

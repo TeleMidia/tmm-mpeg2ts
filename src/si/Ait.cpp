@@ -218,8 +218,8 @@ int Ait::updateStream() {
 		stream[pos++] = ((*it)->applicationId >> 8) & 0xFF;
 		stream[pos++] = (*it)->applicationId & 0xFF;
 		stream[pos++] = (*it)->applicationControlCode & 0xFF;
-		//stream[pos] = 0xF0;
-		stream[pos] = /*stream[pos] |*/ (((*it)->descriptorLoopLength >> 8) & 0xFF);
+		stream[pos] = 0x00; //Recommended resolution. See ABNT NBR 15606-3 2012
+		stream[pos] = stream[pos] | (((*it)->descriptorLoopLength >> 8) & 0xFF);
 		pos++;
 		stream[pos++] = (*it)->descriptorLoopLength & 0xFF;
 		if ((*it)->appDescriptorList) {
