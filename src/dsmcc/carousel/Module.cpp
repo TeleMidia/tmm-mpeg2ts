@@ -99,7 +99,7 @@ namespace dsmcc {
 		return biopList->size();
 	}
 
-	bool Module::saveModuleToFile(string filename) {
+	bool Module::saveModuleToFile(const string& filename) {
 		int fd;
 		char* kind;
 		string kindStr;

@@ -36,7 +36,7 @@ namespace dsmcc {
 			uint64_t getContentSize();
 			unsigned int getContentLength();
 			string getFilename();
-			bool setFilename(string filename);
+			bool setFilename(const string& filename);
 
 			int64_t getSecondaryStreamLength();
 			int64_t writeSecondaryStream(int fd);

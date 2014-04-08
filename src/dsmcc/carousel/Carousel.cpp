@@ -127,7 +127,7 @@ namespace dsmcc {
 		return 0;
 	}
 
-	int Carousel::createCarousel(string outputFile, string tempFolder) {
+	int Carousel::createCarousel(string outputFile, const string& tempFolder) {
 		int result;
 		string outputFolder = getPath(outputFile);
 
@@ -193,7 +193,8 @@ namespace dsmcc {
 		return -4;
 	}
 
-	int Carousel::encapsulateCarousel(string outputFile, string tempFolder) {
+	int Carousel::encapsulateCarousel(const string& outputFile,
+									  const string& tempFolder) {
 		char* buffer;
 		char* blockBuffer;
 		unsigned short blockNumber;
@@ -337,7 +338,9 @@ namespace dsmcc {
 	//This method encapsulates a carousel using Felippe Nagato's perspective.
 	//Files can reach up to ~4GB. Just one semantic have changed and the method
 	//used to encapsulate each block.
-	int Carousel::encapsulateCarouselNP(string outputFile, string tempFolder) {
+	/*
+	int Carousel::encapsulateCarouselNP(const string& outputFile,
+										const string& tempFolder) {
 		char* buffer;
 		char* blockBuffer;
 		unsigned short blockNumber;
@@ -479,7 +482,7 @@ namespace dsmcc {
 		delete blockBuffer;
 
 		return 0;
-	}
+	}*/
 
 	int Carousel::writeSections(int fd, vector<DSMCCSection*>* sectionList) {
 		TSPacket* packet = NULL;
@@ -614,7 +617,7 @@ namespace dsmcc {
 		sectionEncapsulationMode = active;
 	}
 
-	void Carousel::setServiceGatewayFolder(string path) {
+	void Carousel::setServiceGatewayFolder(const string& path) {
 		serviceGatewayFolder = path;
 	}
 

@@ -111,7 +111,7 @@ namespace dsmcc {
 		return filename;
 	}
 
-	bool FileMessage::setFilename(string filename) {
+	bool FileMessage::setFilename(const string& filename) {
 		if (isDir(filename) != 0) {
 			return false;
 		}

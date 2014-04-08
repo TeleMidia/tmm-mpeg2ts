@@ -45,7 +45,7 @@ namespace dsmcc {
 			unsigned int getSize();
 			unsigned int getRemainingSize();
 			unsigned int getNumberOfBiops();
-			bool saveModuleToFile(string filename);
+			bool saveModuleToFile(const string& filename);
 			unsigned short getModuleId();
 			void setModuleId(unsigned short id);
 			vector<BiopMessage*>* getBiopList();

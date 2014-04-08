@@ -99,7 +99,7 @@ namespace dsmcc {
 		return path;
 	}
 
-	bool FileManager::setItemIor(string item, unsigned int carousel,
+	bool FileManager::setItemIor(const string& item, unsigned int carousel,
 			unsigned short moduleId) {
 		map<string,InternalIor*>::iterator i;
 		InternalIor* ior = NULL;
@@ -133,7 +133,7 @@ namespace dsmcc {
 		return true;
 	}
 
-	bool FileManager::getItemIor(string item, unsigned int* c,
+	bool FileManager::getItemIor(const string& item, unsigned int* c,
 			unsigned short* m, unsigned int* k) {
 		map<string,InternalIor*>::iterator i;
 
@@ -154,7 +154,7 @@ namespace dsmcc {
 		return true;
 	}
 
-	bool FileManager::getItemIor(string item, InternalIor** iior) {
+	bool FileManager::getItemIor(const string& item, InternalIor** iior) {
 		map<string,InternalIor*>::iterator i;
 
 		i = folderList->find(item);
@@ -179,7 +179,7 @@ namespace dsmcc {
 		return true;
 	}
 
-	unsigned int FileManager::getItemKey(string item) {
+	unsigned int FileManager::getItemKey(const string& item) {
 		map<string,unsigned int>::iterator i;
 
 		if (allItems != NULL) {
@@ -297,7 +297,7 @@ namespace dsmcc {
 		}
 	}
 
-	vector<string> FileManager::travelDir(string directory) {
+	vector<string> FileManager::travelDir(const string& directory) {
 		// travel thru a directory gathering all the file and directory names
 		vector<string> fileList;
 		DIR *dir;
@@ -338,7 +338,7 @@ namespace dsmcc {
 		}
 	}
 
-	bool FileManager::removeFiles(string folder) {
+	bool FileManager::removeFiles(const string& folder) {
 		struct dirent *next_file;
 		DIR *theFolder;
 		struct stat filestat;

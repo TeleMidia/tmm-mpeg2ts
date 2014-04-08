@@ -39,7 +39,7 @@ namespace dsmcc {
 			vector<StreamEventMessage*>* seMessageList;
 
 			bool createFileMessage(string filename, FileMessage* file);
-			bool createDirMessage(string path, DirectoryMessage* dir);
+			bool createDirMessage(const string& path, DirectoryMessage* dir);
 			void createDummyIors(unsigned int serviceDomain);
 			bool saveModules();
 			void clearModuleList();
@@ -48,7 +48,7 @@ namespace dsmcc {
 			ModuleManager();
 			~ModuleManager();
 
-			bool readServiceGateway(string path);
+			bool readServiceGateway(const string& path);
 			string getServiceGatewayFolder();
 			int getSrgIorStream(char** stream);
 			bool setTempFolder(string path);

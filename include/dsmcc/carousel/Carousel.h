@@ -52,8 +52,10 @@ namespace dsmcc {
 
 			int makeDSI();
 			int makeDII();
-			int encapsulateCarousel(string outputFile, string tempFolder);
-			int encapsulateCarouselNP(string outputFile, string tempFolder);
+			int encapsulateCarousel(const string& outputFile,
+									const string& tempFolder);
+			/*int encapsulateCarouselNP(const string& outputFile,
+									  const string& tempFolder);*/
 			int writeSections(int fd, vector<DSMCCSection*>* section);
 			void clearSectionList(vector<DSMCCSection*>* sectionList);
 			void checkMinBlockSize();
@@ -76,13 +78,13 @@ namespace dsmcc {
 			void setServiceDomain(unsigned int sd);
 			void setDownloadId(unsigned int id);
 			void setTransactionId(unsigned int id);
-			void setServiceGatewayFolder(string path);
+			void setServiceGatewayFolder(const string& path);
 			void addStreamEventMessage(StreamEventMessage* sem);
 
 			bool getSectionEncapsulationMode();
 			void setSectionEncapsulationMode(bool active);
 
-			int createCarousel(string outputFile, string tempFolder);
+			int createCarousel(string outputFile, const string& tempFolder);
 			map<string, InternalIor*>* getFilesIor();
 	 };
 }

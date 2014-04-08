@@ -31,7 +31,7 @@ namespace dsmcc {
 		}
 	}
 
-	bool ModuleManager::readServiceGateway(string path) {
+	bool ModuleManager::readServiceGateway(const string& path) {
 		serviceGatewayFolder = fm->readSrg(path);
 		return (serviceGatewayFolder != "");
 	}
@@ -222,7 +222,7 @@ namespace dsmcc {
 		return file->setFilename(filename);
 	}
 
-	bool ModuleManager::createDirMessage(string path, DirectoryMessage* dir) {
+	bool ModuleManager::createDirMessage(const string& path, DirectoryMessage* dir) {
 		vector<string> folderContent = FileManager::travelDir(path);
 		vector<string>::iterator i;
 		string biopKind, value, fullFileName;

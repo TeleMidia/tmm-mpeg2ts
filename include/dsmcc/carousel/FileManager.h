@@ -48,12 +48,12 @@ namespace dsmcc {
 			~FileManager();
 
 			string readSrg(string path);
-			bool setItemIor(string item, unsigned int carousel,
+			bool setItemIor(const string& item, unsigned int carousel,
 							unsigned short moduleId);
-			bool getItemIor(string item, unsigned int* c, unsigned short* m,
+			bool getItemIor(const string& item, unsigned int* c, unsigned short* m,
 					unsigned int* k);
-			bool getItemIor(string item, InternalIor** iior);
-			unsigned int getItemKey(string item);
+			bool getItemIor(const string& item, InternalIor** iior);
+			unsigned int getItemKey(const string& item);
 			unsigned int getNumberOfItems();
 			map<string,unsigned int>* getAllItems();
 			vector<pair<unsigned int, string> >* getFileSizeList();
@@ -63,9 +63,9 @@ namespace dsmcc {
 			map<string,InternalIor*>* getFileList();
 			void showAllItems();
 
-			static vector<string> travelDir(string directory);
+			static vector<string> travelDir(const string& directory);
 			static void travelAllDir(string directory,vector<string>* fullList);
-			static bool removeFiles(string folder);
+			static bool removeFiles(const string& folder);
 			static bool comparisonStringInt(const pair<string, int> &p1,
 									 const pair<string, int> &p2);
 			static bool comparisonUintString(const pair<unsigned int, string> &p1,
