@@ -236,8 +236,10 @@ void StreamEvent::setFcs(unsigned char fcs) {
 unsigned char StreamEvent::calculateChecksum(char* stream, int length) {
 	unsigned char cs = 0;
 	for (int i = 0; i < length; i++) {
-		cs += stream[i];
+		cs ^= stream[i];
 	}
+	cs = ~cs;
+	if (cs == 0x00) cs = 0xFF;
 	return cs;
 }
 
