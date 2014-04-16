@@ -34,12 +34,13 @@ struct TransportInformation {
 class Nit : public PrivateSection {
 
 	private:
+
+	protected:
 		unsigned short networkDescriptorsLength;
 		vector<MpegDescriptor*> descriptorsList;
 		unsigned short transportStreamLoopLength;
 		vector<TransportInformation*> transportList;
 
-	protected:
 		int processSectionPayload();
 		int calculateSectionSize();
 
@@ -50,6 +51,7 @@ class Nit : public PrivateSection {
 		int updateStream();
 
 		vector<MpegDescriptor*>* getDescriptorsList();
+		vector<TransportInformation*>* getTransportList();
 		void addDescriptor(MpegDescriptor* d);
 		void addTransportInformation(TransportInformation *ti);
 		void releaseAllDescriptors();

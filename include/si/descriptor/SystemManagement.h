@@ -21,13 +21,13 @@ namespace mpeg2 {
 
 class SystemManagement : public MpegDescriptor {
 
-	#define SM_BROADCASTING 0x00;
-	#define SM_NON_BROADCASTING1 0x01;
-	#define SM_NON_BROADCASTING2 0x02;
-	#define SM_UNDEFINED 0x03;
+	#define SM_BROADCASTING 0x00
+	#define SM_NON_BROADCASTING1 0x01
+	#define SM_NON_BROADCASTING2 0x02
+	#define SM_UNDEFINED 0x03
 
-	#define ST_UNDEFINED 0x00;
-	#define ST_ISDB_SYSTEM 0x03;
+	#define ST_UNDEFINED 0x00
+	#define ST_ISDB_SYSTEM 0x03
 
 	private:
 		unsigned char broadcastingFlag;

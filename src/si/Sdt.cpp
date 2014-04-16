@@ -78,8 +78,8 @@ int Sdt::processSectionPayload() {
 				si->descriptorList.push_back(d);
 				break;
 			default:
-				cout << "Sdt::processSectionPayload - Descriptor unrecognized. " <<
-						(descriptorTag && 0xFF) << endl;
+				cout << "Sdt::processSectionPayload - Descriptor unrecognized: " <<
+						(descriptorTag & 0xFF) << endl;
 				break;
 			}
 			pos = pos + descriptorSize;

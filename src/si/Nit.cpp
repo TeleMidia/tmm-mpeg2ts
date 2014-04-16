@@ -82,13 +82,13 @@ int Nit::processSectionPayload() {
 			descriptorsList.push_back(d);
 			break;
 		case 0xFE: // System management descriptor
-			//d = new SystemManagement();
+			d = new SystemManagement();
 			d->addData(stream + pos, descriptorSize);
 			descriptorsList.push_back(d);
 			break;
 		default:
-			cout << "Nit::processSectionPayload - Descriptor unrecognized. " <<
-					(descriptorTag && 0xFF) << endl;
+			cout << "Nit::processSectionPayload - Descriptor unrecognized: " <<
+					(descriptorTag & 0xFF) << endl;
 			break;
 		}
 		pos = pos + descriptorSize;
@@ -117,28 +117,28 @@ int Nit::processSectionPayload() {
 				ti->descriptorList.push_back(d);
 				break;
 			case 0xCD: // TS Information Descriptor
-				//d = new TSInformation();
+				d = new TSInformation();
 				d->addData(stream + pos, descriptorSize);
 				ti->descriptorList.push_back(d);
 				break;
 			case 0xFA: // Terrestrial delivery system descriptor
-				//d = new TerrestrialDeliverySystem();
+				d = new TerrestrialDeliverySystem();
 				d->addData(stream + pos, descriptorSize);
 				ti->descriptorList.push_back(d);
 				break;
 			case 0xFB: // Partial reception descriptor
-				//d = new PartialReception();
+				d = new PartialReception();
 				d->addData(stream + pos, descriptorSize);
 				ti->descriptorList.push_back(d);
 				break;
 			case 0xFD: // Data component descriptor
 				//d = new DataComponent();
-				d->addData(stream + pos, descriptorSize);
-				ti->descriptorList.push_back(d);
+				//d->addData(stream + pos, descriptorSize);
+				//ti->descriptorList.push_back(d);
 				break;
 			default:
-				cout << "Nit::processSectionPayload - Descriptor unrecognized. " <<
-						(descriptorTag && 0xFF) << endl;
+				cout << "Nit::processSectionPayload - Descriptor unrecognized: " <<
+						(descriptorTag & 0xFF) << endl;
 				break;
 			}
 			pos = pos + descriptorSize;
@@ -282,6 +282,10 @@ int Nit::calculateSectionSize() {
 
 vector<MpegDescriptor*>* Nit::getDescriptorsList() {
 	return &descriptorsList;
+}
+
+vector<TransportInformation*>* Nit::getTransportList() {
+	return &transportList;
 }
 
 void Nit::addDescriptor(MpegDescriptor* d) {

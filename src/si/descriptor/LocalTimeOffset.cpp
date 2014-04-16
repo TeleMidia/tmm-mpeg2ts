@@ -37,7 +37,7 @@ int LocalTimeOffset::process() {
 		ltd->countryRegionId = (stream[pos] >> 2) & 0x3F;
 		ltd->localTimeOffsetPolarity = stream[pos++] & 0x01;
 		value = 0;
-		value = ((stream[pos] << 16) & 0xFF) | ((stream[pos + 1] << 8) & 0xFF);
+		value = ((stream[pos] & 0xFF) << 16) | ((stream[pos + 1] & 0xFF) << 8);
 		pos += 2;
 		ltd->localTimeOffset = Tot::BCDtoTime(value);
 		value = ((stream[pos] & 0xFF) << 8) | (stream[pos + 1] & 0xFF);
@@ -50,7 +50,7 @@ int LocalTimeOffset::process() {
 		pos += 3;
 		ltd->timeOfChange = ltd->timeOfChange + Tot::BCDtoTime(value);
 		value = 0;
-		value = ((stream[pos] << 16) & 0xFF) | ((stream[pos + 1] << 8) & 0xFF);
+		value = ((stream[pos] & 0xFF) << 16) | ((stream[pos + 1] & 0xFF) << 8);
 		pos += 2;
 		ltd->nextTimeOffset = Tot::BCDtoTime(value);
 		localTimeDataList.push_back(ltd);

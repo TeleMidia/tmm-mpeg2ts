@@ -89,7 +89,8 @@ int Ait::createAndAddDescriptor(unsigned char descriptorTag,
 		break;
 
 	default:
-		cout << "Descriptor unrecognized. " << (descriptorTag && 0xFF) << endl;
+		cout << "Ait::createAndAddDescriptor - Descriptor unrecognized: " <<
+				(descriptorTag & 0xFF) << endl;
 		break;
 	}
 	return 0;

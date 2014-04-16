@@ -126,7 +126,9 @@ int DSMCCSection::processSectionPayload() {
 					break;
 
 				default:
-					cout << "Descriptor unrecognized. " << descriptorTag << endl;
+					cout << "DSMCCSection::processSectionPayload - ";
+					cout << "Descriptor unrecognized: " <<
+							(descriptorTag & 0xFF) << endl;
 					break;
 			}
 			pos = pos + descriptorSize;

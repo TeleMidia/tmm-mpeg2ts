@@ -114,8 +114,8 @@ int Eit::processSectionPayload() {
 				ei->descriptorsList.push_back(d);
 				break;
 			default:
-				cout << "Eit::processSectionPayload - Descriptor unrecognized. " <<
-						(descriptorTag && 0xFF) << endl;
+				cout << "Eit::processSectionPayload - Descriptor unrecognized: " <<
+						(descriptorTag & 0xFF) << endl;
 				break;
 			}
 			pos = pos + descriptorSize;

@@ -31,11 +31,18 @@ struct ServiceInformation {
 
 class Sdt : public PrivateSection {
 
+	#define RS_UNDEFINED				0
+	#define RS_NOT_RUNNING				1
+	#define RS_STARTS_IN_A_FEW_SECONDS	2
+	#define RS_PAUSING					3
+	#define RS_RUNNING					4
+
 	private:
+
+	protected:
 		unsigned short originalNetworkId;
 		vector<ServiceInformation*> serviceList;
 
-	protected:
 		int processSectionPayload();
 		int calculateSectionSize();
 

@@ -26,7 +26,7 @@ int PartialReception::process() {
 
 	serviceIdList.clear();
 
-	while (pos < descriptorLength) {
+	while (pos <= descriptorLength) {
 		id = ((stream[pos] & 0xFF) << 8) | (stream[pos + 1] & 0xFF);
 		pos += 2;
 		serviceIdList.insert(id);

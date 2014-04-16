@@ -38,10 +38,11 @@ int TerrestrialDeliverySystem::process() {
 	pos++;
 
 	streamLen = descriptorLength - 2;
-	if (streamLen > 0) {
-		value = ((stream[pos] << 8) & 0xFF) | (stream[pos + 1] & 0xFF);
+	while (streamLen) {
+		value = ((stream[pos] & 0xFF) << 8) | (stream[pos + 1] & 0xFF);
 		frequencyList.insert(value);
 		pos += 2;
+		streamLen -= 2;
 	}
 
 	return pos;

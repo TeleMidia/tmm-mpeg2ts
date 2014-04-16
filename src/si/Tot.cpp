@@ -72,8 +72,8 @@ int Tot::processSectionPayload() {
 			descriptorList.push_back(d);
 			break;
 		default:
-			cout << "Tot::processSectionPayload - Descriptor unrecognized. " <<
-					(descriptorTag && 0xFF) << endl;
+			cout << "Tot::processSectionPayload - Descriptor unrecognized: " <<
+					(descriptorTag & 0xFF) << endl;
 			break;
 		}
 		pos = pos + descriptorSize;
