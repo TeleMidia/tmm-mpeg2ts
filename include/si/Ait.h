@@ -28,6 +28,7 @@ struct AppInformation {
 	 unsigned int organizationId;
 	 unsigned short applicationId;
 	 unsigned char applicationControlCode;
+	 unsigned char recommendedResolution;
 	 unsigned short descriptorLoopLength;
 	 vector<MpegDescriptor*>* appDescriptorList;
 };
@@ -47,13 +48,30 @@ class Ait : public PrivateSection {
 	#define AT_ARIB_BML		0x0007
 	#define AT_GINGA_NCL	0x0009
 
+	#define RR_MULTIPLE_SIZES_RESOLUTIONS	0x00
+	#define RR_1920_1080_16_9				0x01
+	#define RR_1280_720_16_9				0x02
+	#define RR_960_540_16_9					0x03
+	#define RR_720_480_16_9					0x04
+	#define RR_720_480_4_3					0x05
+	#define RR_160_120_4_3					0x06
+	#define RR_160_90_16_9					0x07
+	#define RR_320_240_4_3					0x08
+	#define RR_320_180_16_9					0x09
+	#define RR_352_288_4_3					0x0A
+	#define RR_240_N_PORTRAIT				0x0B
+	#define RR_N_240_LANDSCAPE				0x0C
+	#define RR_480_N_PORTRAIT				0x0D
+	#define RR_N_480_LANDSCAPE				0x0E
+
 	private:
+
+	protected:
 		unsigned short commonDescriptorLength;
 		vector<MpegDescriptor*> descriptorList;
 		unsigned short applicationLoopLength;
 		vector<AppInformation*> appInformationList;
 
-	protected:
 		int processSectionPayload();
 		int calculateSectionSize();
 		int createAndAddDescriptor(unsigned char descriptorTag,
@@ -74,6 +92,7 @@ class Ait : public PrivateSection {
 		void addApplicationInfo(unsigned int organizationId,
 								unsigned short applicationId,
 								unsigned char applicationControlCode,
+								unsigned char recommendedResolution,
 								vector<MpegDescriptor*>* appDescriptorList);
 
 };

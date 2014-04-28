@@ -137,6 +137,7 @@ int Ait::processSectionPayload() {
  	   	   	                       (stream[pos+1] & 0xFF));
 		pos += 2;
 		appinfo->applicationControlCode = stream[pos++] & 0xFF;
+		appinfo->recommendedResolution = (stream[pos] & 0xF0) >> 4;
 		appinfo->descriptorLoopLength = (((stream[pos] & 0x0F) << 8) |
  	   	   	                              (stream[pos+1] & 0xFF));
 		pos += 2;
@@ -219,8 +220,9 @@ int Ait::updateStream() {
 		stream[pos++] = ((*it)->applicationId >> 8) & 0xFF;
 		stream[pos++] = (*it)->applicationId & 0xFF;
 		stream[pos++] = (*it)->applicationControlCode & 0xFF;
-		stream[pos] = 0x00; //Recommended resolution. See ABNT NBR 15606-3 2012
-		stream[pos] = stream[pos] | (((*it)->descriptorLoopLength >> 8) & 0xFF);
+		//Recommended resolution. See ABNT NBR 15606-3 2012
+		stream[pos] = ((*it)->recommendedResolution << 4) & 0xF0;
+		stream[pos] = stream[pos] | (((*it)->descriptorLoopLength >> 8) & 0x0F);
 		pos++;
 		stream[pos++] = (*it)->descriptorLoopLength & 0xFF;
 		if ((*it)->appDescriptorList) {
@@ -314,12 +316,14 @@ void Ait::addCommonDescriptor(MpegDescriptor *d) {
 void Ait::addApplicationInfo(unsigned int organizationId,
 						 	unsigned short applicationId,
 							unsigned char applicationControlCode,
+							unsigned char recommendedResolution,
 							vector<MpegDescriptor*>* appDescriptorList) {
 	vector<MpegDescriptor*>::iterator itDesc;
 	AppInformation *appinfo = new AppInformation();
 	appinfo->organizationId = organizationId;
 	appinfo->applicationId = applicationId;
 	appinfo->applicationControlCode = applicationControlCode;
+	appinfo->recommendedResolution = recommendedResolution;
 	appinfo->appDescriptorList = appDescriptorList;
 	appinfo->descriptorLoopLength = 0;
 	if (appDescriptorList) {

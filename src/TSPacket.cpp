@@ -172,7 +172,9 @@ namespace mpeg2 {
 						((stream[payloadOffset + 1] & 0xFF) << 8) |
 						(stream[payloadOffset + 2] & 0xFF));
 
-		sectionType = !((pesStartCode == 0x01) && (pid != 0x00));
+		if (pid != 0x1FF0) {
+			sectionType = !((pesStartCode == 0x01) && (pid != 0x00));
+		} else sectionType = false;
 
 		if (adaptationFieldControl == PAYLOAD_ONLY) {
 			if (sectionType) {
