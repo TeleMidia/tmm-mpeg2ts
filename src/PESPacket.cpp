@@ -451,7 +451,7 @@ namespace mpeg2 {
 	bool PESPacket::setPtsDirectStream(char* stream, uint64_t pts) {
 		unsigned char ptsDtsFlags = ((stream[7] & 0xC0) >> 6);
 		if ((ptsDtsFlags == 2) || (ptsDtsFlags == 3)) {
-			stream[9] = 0x31;
+			if (ptsDtsFlags == 2) stream[9] = 0x21; else stream[9] = 0x31;
 			stream[9] = stream[9] | (((pts >> 15) >> 14) & 0x0E);
 			stream[10] = (pts >> 22) & 0xFF;
 			stream[11] = 0x01;

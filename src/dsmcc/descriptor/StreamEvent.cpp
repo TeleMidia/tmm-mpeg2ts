@@ -144,7 +144,7 @@ int StreamEvent::updateStream() {
 	memcpy(stream + pos, privateDataPayload, privateDataPayloadLength);
 	pos = pos + privateDataPayloadLength;
 
-	fcs = StreamEvent::calculateChecksum(stream + 12, privateDataLength - 1);
+	fcs = StreamEvent::checksum(stream + 12, privateDataLength - 1);
 
 	stream[pos++] = (fcs & 0xFF);
 
@@ -231,6 +231,27 @@ int StreamEvent::setPrivateDataPayload(char* data, unsigned char length) {
 
 void StreamEvent::setFcs(unsigned char fcs) {
 	this->fcs = fcs;
+}
+
+unsigned char StreamEvent::checksum(char* stream, int length) {
+	unsigned char cs, old;
+
+	if (length) return 0;
+
+	cs = stream[0];
+	old = cs;
+
+	for (int i = 1; i < length; i++) {
+		cs += stream[i];
+		if (cs < old) ++cs;
+		old = cs;
+	}
+
+	cs = ~cs;
+
+	if (cs == 0x00) cs = 0xFF;
+
+	return cs;
 }
 
 unsigned char StreamEvent::calculateChecksum(char* stream, int length) {

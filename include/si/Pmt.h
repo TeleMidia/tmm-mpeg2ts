@@ -100,6 +100,14 @@ class Pmt : public PrivateSection {
 		static const unsigned char STREAM_TYPE_META_DSMCC_SYNCH = 0x19;
 		static const unsigned char STREAM_TYPE_MPEG2_IPMP_STREAM = 0x1A;
 		static const unsigned char STREAM_TYPE_VIDEO_H264 = 0x1B;
+		static const unsigned char STREAM_TYPE_AUDIO_AAC_CLEAN = 0x1C;
+		static const unsigned char STREAM_TYPE_MPEG4_TIMED_TEXT = 0x1D;
+		static const unsigned char STREAM_TYPE_VIDEO_RVC = 0x1E;
+		static const unsigned char STREAM_TYPE_VIDEO_H264_SVC_SUB_BITSTREAM = 0x1F;
+		static const unsigned char STREAM_TYPE_VIDEO_H264_MVC_SUB_BITSTREAM = 0x20;
+		static const unsigned char STREAM_TYPE_VIDEO_JPEG2000 = 0x21;
+		static const unsigned char STREAM_TYPE_VIDEO_MPEG2_STEREO_ADDITIONAL_VIEW = 0x22;
+		static const unsigned char STREAM_TYPE_VIDEO_H264_STEREO_ADDITIONAL_VIEW  = 0x23;
 		static const unsigned char STREAM_TYPE_IPMP_STREAM = 0x7F;
 		static const unsigned char STREAM_TYPE_AUDIO_AC3 = 0x81;
 		static const unsigned char STREAM_TYPE_AUDIO_DTS = 0x8A;

@@ -82,11 +82,19 @@ string Pmt::getStreamTypeName(unsigned char streamType) {
 	(streamTypeNames)[23] =	"Metadata (ISO/IEC 13818-6 Data Carousel)";
 	(streamTypeNames)[24] =	"Metadata (ISO/IEC 13818-6 Object Carousel)";
 	(streamTypeNames)[25] =	"Metadata (ISO/IEC 13818-6 SDP)";
-	(streamTypeNames)[26] = "IPMP stream";
-	(streamTypeNames)[27] =	"AVC video stream";
+	(streamTypeNames)[26] = "IPMP stream (ISO/IEC 13818-11)";
+	(streamTypeNames)[27] =	"AVC video stream (ISO/IEC 14496-10)";
+	(streamTypeNames)[28] =	"ISO/IEC 14496-3 Audio (No transport syntax)";
+	(streamTypeNames)[29] =	"ISO/IEC 14496-17 Text";
+	(streamTypeNames)[30] =	"Auxiliary video stream (ISO/IEC 23002-3)";
+	(streamTypeNames)[31] =	"SVC video sub-bitstream (Annex G of Rec. ITU-T H.264)";
+	(streamTypeNames)[32] =	"MVC video sub-bitstream (Annex H of Rec. ITU-T H.264)";
+	(streamTypeNames)[33] =	"Video stream (ITU-T Rec. T.800 | ISO/IEC 15444-1)";
+	(streamTypeNames)[34] =	"MPEG2 video stream with additional view (stereoscopic 3D)";
+	(streamTypeNames)[35] =	"H264 video stream with additional view (stereoscopic 3D)";
 	(streamTypeNames)[127] = "IPMP stream";
-	(streamTypeNames)[129] = "audio AC3";
-	(streamTypeNames)[138] = "audio DTS";
+	(streamTypeNames)[129] = "Dolby Digital audio for ATSC";
+	(streamTypeNames)[138] = "DTS audio";
 
 	if (streamTypeNames.count(streamType) == 0) {
 		return "Unknown";

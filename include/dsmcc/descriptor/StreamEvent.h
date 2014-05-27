@@ -147,6 +147,7 @@ class StreamEvent : public MpegDescriptor {
 		int setPrivateDataPayload(char* data, unsigned char length);
 		void setFcs(unsigned char fcs);
 
+		static unsigned char checksum(char* stream, int length);
 		static unsigned char calculateChecksum(char* stream, int length);
 
 };
