@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 2.6)
-
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8 )
 
 SET( PROJ_NAME      "mpeg2-tm" )
