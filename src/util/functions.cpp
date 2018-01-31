@@ -118,14 +118,6 @@ namespace util {
 		return os.str();
 	}
 
-	float stof(string s) {
-		float f = 0.0f;
-		stringstream ss;
-		ss << s;
-		ss >> f;
-		return f;
-	}
-
 	float itof(int i) {
 		string s = itos(i);
 		return stof(s);

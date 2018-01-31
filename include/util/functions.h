@@ -54,7 +54,6 @@ namespace util {
 	string lowerCase(string s);
 	bool isNumeric(void* value);
 	string itos(double i);
-	float stof(string s);
 	float itof(int i);
 	string extractFilename(string filename);
 	string absoluteFile(string basePath, string filename);
