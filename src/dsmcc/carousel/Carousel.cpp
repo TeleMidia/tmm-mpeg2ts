@@ -36,6 +36,7 @@ namespace dsmcc {
 		transactionId = 0x80090002;  //See ABNT NBR 15606-3 2012
 		sectionEncapsulationMode = false;
 		continuityCounter = 0;
+		carouselVersion = 0;
 		pid = 0x384;
 		dsi = NULL;
 		dii = NULL;
@@ -125,6 +126,7 @@ namespace dsmcc {
 			mi->setModuleId(i->first);
 			mi->setModuleSize(i->second->getSize());
 			mi->setModuleInfoByte(buffer, 21);
+			mi->setModuleVersion(carouselVersion);
 			mil->push_back(mi);
 			++i;
 		}
@@ -316,6 +318,7 @@ namespace dsmcc {
 				ddb->setModuleVersion(0x01);
 				ddb->setBlockDataByte(blockBuffer, blockRd);
 				ddb->setBlockNumber(blockNumber++);
+				ddb->setModuleVersion(carouselVersion);
 				streamLength = ddb->getStream(&buffer);
 				section = new DSMCCSection();
 				section->setTableId(0x3C);
@@ -607,6 +610,10 @@ namespace dsmcc {
 		return transactionId;
 	}
 
+	unsigned char Carousel::getCarouselVersion() {
+		return carouselVersion;
+	}
+
 	string Carousel::getServiceGatewayFolder() {
 		return serviceGatewayFolder;
 	}
@@ -623,6 +630,10 @@ namespace dsmcc {
 		id = id & 0x0000FFFF;
 		transactionId = 0x80090000;
 		transactionId = transactionId | id;
+	}
+
+	void Carousel::setCarouselVersion(unsigned char v) {
+		carouselVersion = v;
 	}
 
 	bool Carousel::getSectionEncapsulationMode() {

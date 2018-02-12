@@ -58,6 +58,7 @@ namespace dsmcc {
 			unsigned short blockSize;
 			unsigned int serviceDomain;
 			unsigned int transactionId;
+			unsigned char carouselVersion;
 			vector<StreamEventMessage*> seMessageList;
 			bool sectionEncapsulationMode;
 			string serviceGatewayFolder;
@@ -88,12 +89,14 @@ namespace dsmcc {
 			unsigned int getServiceDomain();
 			unsigned int getDownloadId();
 			unsigned int getTransactionId();
+			unsigned char getCarouselVersion();
 			string getServiceGatewayFolder();
 
 			void setBlockSize(unsigned short size);
 			void setServiceDomain(unsigned int sd);
 			void setDownloadId(unsigned int id);
 			void setTransactionId(unsigned int id);
+			void setCarouselVersion(unsigned char v);
 			void setServiceGatewayFolder(const string& path);
 			void addStreamEventMessage(StreamEventMessage* sem);
 
