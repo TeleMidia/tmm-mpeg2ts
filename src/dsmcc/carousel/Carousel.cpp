@@ -315,10 +315,10 @@ namespace dsmcc {
 				ddb = new DownloadDataBlock();
 				ddb->setExtensionId(serviceDomain);
 				ddb->setModuleId(i->first);
-				ddb->setModuleVersion(0x01);
+				ddb->setModuleVersion(0x0); // change from 0x1 by rafael on 2025-06-01
 				ddb->setBlockDataByte(blockBuffer, blockRd);
 				ddb->setBlockNumber(blockNumber++);
-				ddb->setModuleVersion(carouselVersion);
+				// ddb->setModuleVersion(carouselVersion);
 				streamLength = ddb->getStream(&buffer);
 				section = new DSMCCSection();
 				section->setTableId(0x3C);
