@@ -62,7 +62,8 @@ class Ait : public PrivateSection {
 	#define AT_DVB_HTML		0x0001
 	#define AT_ACAP_J		0x0006
 	#define AT_ARIB_BML		0x0007
-	#define AT_GINGA_NCL	0x0009
+	#define AT_GINGA_NCL    	0x0009
+	#define AT_GINGA_HTML    	0x000B
 
 	#define RR_MULTIPLE_SIZES_RESOLUTIONS	0x00
 	#define RR_1920_1080_16_9				0x01
